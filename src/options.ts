@@ -1,6 +1,4 @@
-import loaderUtils from 'loader-utils';
-
-export interface Options extends loaderUtils.OptionObject {
+export interface Options {
    /**
     * Remove SVG specific attributes like `height` and `width`.
     */

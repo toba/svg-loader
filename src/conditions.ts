@@ -1,10 +1,15 @@
-import {
-   StartTag,
-   EndTag,
-   Attribute,
-   TokenType,
-   Token
-} from 'simple-html-tokenizer';
+import { StartTag, EndTag, Attribute, Token } from 'simple-html-tokenizer';
+
+/**
+ * Shadow `TokenType` in `simple-html-tokenizer` because it uses `const enum`
+ * which Babel doesn't support.
+ */
+export enum TokenType {
+   StartTag = 'StartTag',
+   EndTag = 'EndTag',
+   Chars = 'Chars',
+   Comment = 'Comment'
+}
 
 export interface StyleTag extends StartTag {
    tagName: 'style';
@@ -38,10 +43,10 @@ export const isStyleTag: TagFilter<StyleTag> = (tag?: Token): tag is StyleTag =>
    isStartTag(tag) && tag.tagName === 'style';
 
 /**
- * Returns `true` if attribute name is neither `height` nor `width`.
+ * Returns `true` if attribute name is `height` or `width`.
  */
-export const isNotSizeAttribute: AttributeFilter = (attribute: Attribute) =>
-   attribute[0] !== 'width' && attribute[0] !== 'height';
+export const isSizeAttribute: AttributeFilter = (attribute: Attribute) =>
+   attribute[0] === 'width' || attribute[0] === 'height';
 
 export const hasNoAttributes = (exclude: string[]): AttributeFilter => (
    attribute: Attribute

@@ -5,7 +5,7 @@ import {
    isTag,
    isSvgTag,
    isStartTag,
-   isNotSizeAttribute,
+   isSizeAttribute,
    hasAttributes,
    hasNoAttributes
 } from './conditions';
@@ -14,15 +14,18 @@ import { Options, defaultOptions } from './options';
 type Transformer = (tag: Token) => Token | undefined;
 
 /**
- * Remove size attributes.
+ * Remove size attributes from SVG tags.
  */
 export const removeSizeAttributes: Transformer = (tag: StartTag) => {
    if (isSvgTag(tag)) {
-      tag.attributes = tag.attributes.filter(isNotSizeAttribute);
+      tag.attributes = tag.attributes.filter(t => !isSizeAttribute(t));
    }
    return tag;
 };
 
+/**
+ * Remove all attributes with given names.
+ */
 export function removeAttributes(exclude: string[]): Transformer {
    const allowOnly = hasNoAttributes(exclude);
    return (tag: StartTag) => {
@@ -32,6 +35,10 @@ export function removeAttributes(exclude: string[]): Transformer {
       return tag;
    };
 }
+
+/**
+ * Show console warning about attributes with given names.
+ */
 function warnAboutAttributes(warnAbout: string[]): Transformer {
    var allowOnly = hasAttributes(warnAbout);
    return (tag: StartTag) => {
@@ -102,105 +109,16 @@ function attributeIndex(tag: StartTag, attr: string): number {
    return -1;
 }
 
-// function createClassPrefix(classPrefix: string): Transformer {
-//    //http://stackoverflow.com/questions/12391760/regex-match-css-class-name-from-single-string-containing-multiple-classes
-//    var re = /\.(-?[_a-zA-Z]+[_a-zA-Z0-9-]*)(?![^\{]*\})/g;
-//    var inStyleTag = false;
-
-//    return (tag: Tag) => {
-//       if (!isStartTag(tag)) {
-//          return tag;
-//       }
-//       if (inStyleTag) {
-//          let string = tag.chars;
-//          // push matches to an array so we can operate in reverse
-//          let match: RegExpExecArray | null;
-//          const matches: RegExpExecArray[] = [];
-
-//          while ((match = re.exec(string))) {
-//             matches.push(match);
-//          }
-
-//          // update the string in reverse so our matches indices don't get off
-//          for (var i = matches.length - 1; i >= 0; i--) {
-//             string =
-//                string.substring(0, matches[i].index + 1) +
-//                classPrefix +
-//                string.substring(matches[i].index + 1);
-//          }
-//          tag.chars = string;
-//          inStyleTag = false;
-//       } else if (isStyleTag(tag)) {
-//          inStyleTag = true;
-//       } else {
-//          let classIndex = attributeIndex(tag, 'class');
-//          if (classIndex >= 0) {
-//             // Prefix classes when multiple classes are present
-//             let classes: string = tag.attributes[classIndex][1];
-//             let prefixedClassString = '';
-
-//             classes = classes.replace(/[ ]+/, ' ');
-
-//             classes.split(' ').forEach(c => {
-//                prefixedClassString += classPrefix + c + ' ';
-//             });
-
-//             tag.attributes[classIndex][1] = prefixedClassString;
-//          }
-//       }
-//       return tag;
-//    };
-// }
-
-// const urlPattern = /^url\(#.+\)$/i;
-
-// const createIdPrefix = (idPrefix: string): Transformer => (tag: any) => {
-//    var idIdx = attributeIndex(tag, 'id');
-//    if (idIdx !== -1) {
-//       //  prefix id definitions
-//       tag.attributes[idIdx][1] = idPrefix + tag.attributes[idIdx][1];
-//    }
-
-//    if (tag.tagName == 'use') {
-//       // replace references via <use xlink:href='#foo'>
-//       var hrefIdx = attributeIndex(tag, 'xlink:href');
-//       if (hrefIdx !== -1) {
-//          tag.attributes[hrefIdx][1] =
-//             '#' + idPrefix + tag.attributes[hrefIdx][1].substring(1);
-//       }
-//    }
-//    if (tag.attributes && tag.attributes.length > 0) {
-//       // replace instances of url(#foo) in attributes
-//       tag.attributes.forEach((attr: string[]) => {
-//          if (attr[1].match(urlPattern)) {
-//             attr[1] = attr[1].replace(urlPattern, match => {
-//                var id = match.substring(5, match.length - 1);
-//                return `url(#${idPrefix}${id})`;
-//             });
-//          }
-//       });
-//    }
-
-//    return tag;
-// };
-
 export function runTransform(
    tags: Token[],
    userOptions?: Partial<Options>
 ): Token[] {
    const options: Options = {
-      userConfig: userOptions,
+      ...userOptions,
       ...defaultOptions
-   } as Options;
-
+   };
    const transforms: Transformer[] = [];
 
-   // if (is.text(config.classPrefix)) {
-   //    transformations.push(createClassPrefix(config.classPrefix));
-   // }
-   // if (is.text(options.idPrefix)) {
-   //    transforms.push(createIdPrefix(options.idPrefix));
-   // }
    if (options.removeSvgAttributes) {
       transforms.push(removeSizeAttributes);
    }
