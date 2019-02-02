@@ -1,5 +1,5 @@
 import { is } from '@toba/tools';
-import { StartTag, TokenType, Token } from 'simple-html-tokenizer';
+import { StartTag, Token } from 'simple-html-tokenizer';
 import {
    Tag,
    isTag,
@@ -7,16 +7,17 @@ import {
    isStartTag,
    isSizeAttribute,
    hasAttributes,
-   hasNoAttributes
+   hasNoAttributes,
+   TokenType
 } from './conditions';
 import { Options, defaultOptions } from './options';
 
-type Transformer = (tag: Token) => Token | undefined;
+type Transformer<T extends Token> = (tag: T) => T | undefined;
 
 /**
  * Remove size attributes from SVG tags.
  */
-export const removeSizeAttributes: Transformer = (tag: StartTag) => {
+export const removeSizeAttributes: Transformer<StartTag> = tag => {
    if (isSvgTag(tag)) {
       tag.attributes = tag.attributes.filter(t => !isSizeAttribute(t));
    }
@@ -26,9 +27,9 @@ export const removeSizeAttributes: Transformer = (tag: StartTag) => {
 /**
  * Remove all attributes with given names.
  */
-export function removeAttributes(exclude: string[]): Transformer {
+export function removeAttributes(...exclude: string[]): Transformer<StartTag> {
    const allowOnly = hasNoAttributes(exclude);
-   return (tag: StartTag) => {
+   return tag => {
       if (isStartTag(tag)) {
          tag.attributes = tag.attributes.filter(allowOnly);
       }
@@ -39,9 +40,11 @@ export function removeAttributes(exclude: string[]): Transformer {
 /**
  * Show console warning about attributes with given names.
  */
-function warnAboutAttributes(warnAbout: string[]): Transformer {
+export function warnAboutAttributes(
+   ...warnAbout: string[]
+): Transformer<StartTag> {
    var allowOnly = hasAttributes(warnAbout);
-   return (tag: StartTag) => {
+   return tag => {
       if (isStartTag(tag)) {
          const names = tag.attributes.filter(allowOnly).map(a => a[0]);
 
@@ -57,8 +60,8 @@ function warnAboutAttributes(warnAbout: string[]): Transformer {
    };
 }
 
-const isRemovingTag = (removingTags: string[], tag: Tag) =>
-   removingTags.indexOf(tag.tagName) > -1;
+const isRemovingTag = (toRemove: string[], tag: Tag) =>
+   toRemove.indexOf(tag.tagName) > -1;
 
 const isWarningTag = (warningTags: string[], tag: Tag) =>
    warningTags.indexOf(tag.tagName) > -1;
@@ -67,14 +70,14 @@ const isWarningTag = (warningTags: string[], tag: Tag) =>
  * Remove certain tags.
  * @param remove Names of tags to remove
  */
-function removeTags(remove: string[] = []): Transformer {
+export function removeTags(...remove: string[]): Transformer<Token> {
    /**
     * Name of tag being removed. Need to hold reference while iterating over
     * child tags until the closing tag is reached.
     */
    let removingTag: string | null = null;
 
-   return (tag: Token) => {
+   return tag => {
       if (!isTag(tag)) {
          return tag;
       }
@@ -91,23 +94,14 @@ function removeTags(remove: string[] = []): Transformer {
    };
 }
 
-const warnAboutTags = (warningTags: string[] = []): Transformer => tag => {
+export const warnAboutTags = (
+   ...warningTags: string[]
+): Transformer<Token> => tag => {
    if (isStartTag(tag) && isWarningTag(warningTags, tag)) {
       console.warn(`svg-inline-loader: forbidden tag ${tag.tagName}`);
    }
    return tag;
 };
-
-function attributeIndex(tag: StartTag, attr: string): number {
-   if (tag.attributes !== undefined && tag.attributes.length > 0) {
-      for (let i = 0; i < tag.attributes.length; i++) {
-         if (tag.attributes[i][0] === attr) {
-            return i;
-         }
-      }
-   }
-   return -1;
-}
 
 export function runTransform(
    tags: Token[],
@@ -117,22 +111,22 @@ export function runTransform(
       ...userOptions,
       ...defaultOptions
    };
-   const transforms: Transformer[] = [];
+   const transforms: Transformer<any>[] = [];
 
    if (options.removeSvgAttributes) {
       transforms.push(removeSizeAttributes);
    }
    if (options.warnTags.length > 0) {
-      transforms.push(warnAboutTags(options.warnTags));
+      transforms.push(warnAboutTags(...options.warnTags));
    }
    if (options.removeTags === true) {
-      transforms.push(removeTags(options.tagsToRemove));
+      transforms.push(removeTags(...options.tagsToRemove));
    }
    if (options.warnAttributes.length > 0) {
-      transforms.push(warnAboutAttributes(options.warnAttributes));
+      transforms.push(warnAboutAttributes(...options.warnAttributes));
    }
    if (options.attributesToRemove.length > 0) {
-      transforms.push(removeAttributes(options.attributesToRemove));
+      transforms.push(removeAttributes(...options.attributesToRemove));
    }
 
    return transforms.reduce(
