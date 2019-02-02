@@ -103,7 +103,7 @@ export const warnAboutTags = (
    return tag;
 };
 
-export function runTransform(
+export function transform(
    tags: Token[],
    userOptions?: Partial<Options>
 ): Token[] {
