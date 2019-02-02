@@ -1,0 +1,43 @@
+{
+   "name": "@toba/svg-loader",
+   "version": "1.0.0",
+   "description": "toba svg-loader module",
+   "private": false,
+   "author": {
+      "name": "Jason Abbott",
+      "url": "http://github.com/toba"
+   },
+   "license": "MIT",
+   "publishConfig": {
+      "access": "public"
+   },
+   "main": "dist/index.js",
+   "types:": "dist/index.d.ts",
+   "files": [
+      "dist/**/*"
+   ],
+   "sideEffects": [
+      "*.scss"
+   ],
+   "scripts": {
+      "prepublishOnly": "./node_modules/.bin/tsc --project tsconfig.build.json",
+      "test": "jest --coverage"
+   },
+   "devDependencies": {
+      "@toba/develop": "^4.0.0",
+      "@toba/example": "^2.0.0",
+      "@toba/test": "^3.0.0",
+      "@types/loader-utils": "^1.1.3",
+      "@types/webpack": "^4.4.24",
+      "simple-html-tokenizer": "^0.5.7",
+      "webpack": "^4.29.0"
+   },
+   "repository": {
+      "type": "git",
+      "url": "https://github.com/toba/svg-loader"
+   },
+   "dependencies": {
+      "@toba/tools": "^6.1.1",
+      "loader-utils": "^1.2.3"
+   }
+}
