@@ -1,3 +1,5 @@
+export const loaderName = 'toba-svg-loader';
+
 export interface Options {
    /**
     * Remove SVG specific attributes like `height` and `width`.

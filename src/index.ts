@@ -2,7 +2,7 @@ import { is } from '@toba/tools';
 import webpack from 'webpack';
 import { tokenize, Token } from 'simple-html-tokenizer';
 import loaderUtils from 'loader-utils';
-import { Options } from './options';
+import { Options, loaderName } from './options';
 import { transform } from './transformer';
 import { generate } from './generator';
 
@@ -41,7 +41,7 @@ export function parse(svgText: string, userOptions?: Partial<Options>) {
       tags = tokenize(clean);
    } catch (e) {
       console.warn(
-         'svg-inline-loader: Tokenization has failed, please check SVG is correct.',
+         `${loaderName}: Tokenization has failed; please check SVG is correct.`,
          e
       );
       return clean;

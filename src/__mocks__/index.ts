@@ -35,7 +35,7 @@ const text = (content: string): Chars => ({
 });
 
 const attributes = (...names: string[]): Attribute[] =>
-   names.map((n, i) => [n, i.toString(), false] as Attribute);
+   names.map((n, i) => [n, (i + 1).toString(), false] as Attribute);
 
 export const mock = {
    comment,

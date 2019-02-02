@@ -10,7 +10,7 @@ import {
    hasNoAttributes,
    TokenType
 } from './conditions';
-import { Options, defaultOptions } from './options';
+import { Options, defaultOptions, loaderName } from './options';
 
 type Transformer<T extends Token> = (tag: T) => T | undefined;
 
@@ -50,7 +50,7 @@ export function warnAboutAttributes(
 
          if (names.length > 0) {
             console.warn(
-               `svg-inline-loader: tag ${
+               `${loaderName}: tag ${
                   tag.tagName
                } has forbidden attrs: ${names.join(', ')}`
             );
