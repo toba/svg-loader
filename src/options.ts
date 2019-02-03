@@ -6,20 +6,19 @@ export interface Options {
     */
    removeSvgAttributes: boolean;
    /**
-    * Whether any of the specific tags should be removed. The default is `false`.
+    * Whether any of the specified tags should be removed. The default is
+    * `false`.
     */
    removeTags: boolean;
    /**
-    * Tag names that will be removed. The default is `title`, `desc`, `defs`,
-    * and `style`.
+    * Tag names that will be removed if `removeTags` is `true`. The default is
+    * `title`, `desc`, `defs`, and `style`.
     */
    tagsToRemove: string[];
    /**
     * Attibutes to remove from all tags. The defalt is none.
     */
    attributesToRemove: string[];
-   // classPrefix: string | false;
-   // idPrefix: string | false;
    /**
     * Tag names that will trigger a console warning. The default is none.
     */
@@ -35,8 +34,6 @@ export const defaultOptions: Options = {
    removeTags: false,
    tagsToRemove: ['title', 'desc', 'defs', 'style'],
    attributesToRemove: [],
-   // classPrefix: false,
-   // idPrefix: false,
    warnTags: [],
    warnAttributes: []
 };

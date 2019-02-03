@@ -60,7 +60,7 @@ export function warnAboutAttributes(
    };
 }
 
-const isRemovingTag = (toRemove: string[], tag: Tag) =>
+const isRemovableTag = (toRemove: string[], tag: Tag) =>
    toRemove.indexOf(tag.tagName) > -1;
 
 const isWarningTag = (warningTags: string[], tag: Tag) =>
@@ -82,7 +82,7 @@ export function removeTags(...remove: string[]): Transformer<Token> {
          return tag;
       }
       if (removingTag == null) {
-         if (isRemovingTag(remove, tag)) {
+         if (isRemovableTag(remove, tag)) {
             removingTag = tag.tagName;
          } else {
             return tag;
