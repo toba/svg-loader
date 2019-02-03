@@ -14,6 +14,7 @@ export function compiler(
 ): Promise<webpack.Stats> {
    const bundler = webpack({
       context: __dirname,
+      mode: 'production',
       entry: `./${fileName}`,
       output: {
          path: path.resolve(__dirname),
