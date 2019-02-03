@@ -31,18 +31,18 @@ export const escape = (value: string): string =>
       : value;
 
 /**
+ * Create a key-value pair.
+ */
+export const keyValue = (name: string, value: string) =>
+   name + (is.empty(value) ? '' : `="${escape(value)}"`);
+
+/**
  * Convert attributes to a key-value list.
  */
 export const keyValueList = (attributes: Attribute[]) =>
    attributes.length > 0
       ? ' ' + attributes.map(a => keyValue(a[0], a[1])).join(' ')
       : '';
-
-/**
- * Create a key-value pair.
- */
-export const keyValue = (name: string, value: string) =>
-   name + (is.empty(value) ? '' : `="${escape(value)}"`);
 
 /**
  * Methods to convert each token type to a string.
