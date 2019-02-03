@@ -3,7 +3,7 @@ import path from 'path';
 import { tagsToRemove, tagsToKeep } from './__mocks__';
 import { readFileText } from '@toba/test';
 import { tokenize } from 'simple-html-tokenizer';
-import { parse } from './';
+import { parse } from './parse';
 import { loaderName } from './options';
 import { isTag, isSvgTag, isSizeAttribute, isStartTag } from './conditions';
 
@@ -31,18 +31,6 @@ test('remove width and height from <svg /> element', () => {
          });
       }
    });
-});
-
-test('remove xml declaration', () => {
-   const svg = imported.get('xml-rect');
-   const tokens = tokenize(parse(svg));
-   const firstTag = tokens[0];
-
-   expect(isTag(firstTag)).toBe(true);
-
-   if (isTag(firstTag)) {
-      expect(firstTag.tagName).not.toBe('xml');
-   }
 });
 
 test('remove <defs /> and its children if removeTags is true', () => {
@@ -138,4 +126,15 @@ test('warn about tags listed in warnTags option', () => {
 
    expect(warn).toHaveBeenCalledTimes(11);
    expect(warn).toHaveBeenLastCalledWith(`${loaderName}: forbidden tag style`);
+});
+test('remove xml declaration', () => {
+   const svg = imported.get('xml-rect');
+   const tokens = tokenize(parse(svg));
+   const firstTag = tokens[0];
+
+   expect(isTag(firstTag)).toBe(true);
+
+   if (isTag(firstTag)) {
+      expect(firstTag.tagName).not.toBe('xml');
+   }
 });
