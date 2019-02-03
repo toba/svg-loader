@@ -8,6 +8,7 @@ import {
 import { TokenType } from '../conditions';
 
 const endTag = (name: string): EndTag => ({
+   // @ts-ignore Using custom TokenType because Babel doesn't support const enum
    type: TokenType.EndTag,
    tagName: name
 });
@@ -16,6 +17,7 @@ const startTag = (
    name: string,
    attributes: { [key: string]: string } = {}
 ): StartTag => ({
+   // @ts-ignore
    type: TokenType.StartTag,
    tagName: name,
    attributes: Object.keys(attributes).map(
@@ -25,11 +27,13 @@ const startTag = (
 });
 
 const comment = (content: string): Comment => ({
+   // @ts-ignore
    type: TokenType.Comment,
    chars: content
 });
 
 const text = (content: string): Chars => ({
+   // @ts-ignore
    type: TokenType.Chars,
    chars: content
 });

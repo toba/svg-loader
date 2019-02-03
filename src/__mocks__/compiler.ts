@@ -2,6 +2,8 @@ import path from 'path';
 import webpack from 'webpack';
 import memoryfs from 'memory-fs';
 
+const memFS = new memoryfs();
+
 /**
  * Test loader.
  * @see https://webpack.js.org/contribute/writing-a-loader/#testing
@@ -22,19 +24,21 @@ export function compiler(
             {
                test: /\.svg$/,
                use: {
-                  loader: path.resolve(__dirname, '..', 'index')
+                  loader: path.resolve(__dirname, '..', 'index.ts')
                }
             }
          ]
       }
    });
 
-   bundler.outputFileSystem = new memoryfs();
+   bundler.outputFileSystem = memFS;
 
    return new Promise((resolve, reject) => {
       bundler.run((err, stats) => {
-         if (err !== null || stats.hasErrors()) {
+         if (err !== null) {
             reject(err);
+         } else if (stats.hasErrors()) {
+            reject(stats.compilation.errors[0]);
          } else {
             resolve(stats);
          }

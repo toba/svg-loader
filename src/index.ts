@@ -10,8 +10,9 @@ const svgLoader: webpack.loader.Loader = function(text: string): string {
    if (is.callable(this.cacheable)) {
       this.cacheable();
    }
-   this.value = text;
-   const options = loaderUtils.parseQuery(this.query);
+   const options = is.empty(this.query)
+      ? undefined
+      : loaderUtils.parseQuery(this.query);
 
    return 'module.exports = ' + JSON.stringify(parse(text, options));
 };

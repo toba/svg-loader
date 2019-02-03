@@ -4,19 +4,20 @@
       {
          "type": "node",
          "request": "launch",
-         "name": "Jest",
-         "port": 9229,
+         // name vscode-jest-tests to make default for code lens
+         "name": "vscode-jest-tests=skip",
+         "console": "internalConsole",
          "address": "localhost",
          "stopOnEntry": false,
          "sourceMaps": true,
          "runtimeArgs": [
-            "--inspect-brk",
-            "./node_modules/jest-cli/bin/jest.js",
+            "--inspect-brk=27511",
+            "./node_modules/jest/bin/jest.js",
             "--runInBand"
-            // "client.test.ts",
-            // "--testNamePattern",
-            // "EXIF"
          ],
+         "env": {
+            "CI": "vscode-jest-tests"
+         },
          "cwd": "${workspaceRoot}"
       }
    ]
