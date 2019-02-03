@@ -98,7 +98,7 @@ export const warnAboutTags = (
    ...warningTags: string[]
 ): Transformer<Token> => tag => {
    if (isStartTag(tag) && isWarningTag(warningTags, tag)) {
-      console.warn(`svg-inline-loader: forbidden tag ${tag.tagName}`);
+      console.warn(`${loaderName}: forbidden tag ${tag.tagName}`);
    }
    return tag;
 };
@@ -108,8 +108,8 @@ export function transform(
    userOptions?: Partial<Options>
 ): Token[] {
    const options: Options = {
-      ...userOptions,
-      ...defaultOptions
+      ...defaultOptions,
+      ...userOptions
    };
    const transforms: Transformer<any>[] = [];
 

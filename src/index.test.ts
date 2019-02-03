@@ -1,184 +1,141 @@
 import '@toba/test';
+import path from 'path';
+import { tagsToRemove, tagsToKeep } from './__mocks__';
 import { readFileText } from '@toba/test';
 import { tokenize } from 'simple-html-tokenizer';
 import { parse } from './';
-import { isTag, isSvgTag, isSizeAttribute } from './conditions';
+import { loaderName } from './options';
+import { isTag, isSvgTag, isSizeAttribute, isStartTag } from './conditions';
 
-let rectSGV: string;
+const imported: Map<string, string> = new Map();
 
-beforeAll(async () => {
-   rectSGV = await readFileText('./__mocks__/xml-rect.svg');
-});
+beforeAll(() =>
+   Promise.all(
+      // load example SVG files
+      ['xml-rect', 'style-inserted', 'with-ids', 'removing-tags'].map(name =>
+         readFileText(path.resolve(__dirname, '__mocks__', name + '.svg')).then(
+            text => imported.set(name, text)
+         )
+      )
+   )
+);
 
-var svg = parse(rectSGV);
-var tokens = tokenize(svg);
+test('remove width and height from <svg /> element', () => {
+   const svg = imported.get('xml-rect');
+   const tokens = tokenize(parse(svg));
 
-test('should remove width and height from <svg /> element', () => {
    tokens.forEach(t => {
       if (isSvgTag(t)) {
          t.attributes.forEach(a => {
-            expect(isSizeAttribute(a)).toBe(true);
+            expect(isSizeAttribute(a)).toBe(false);
          });
       }
    });
 });
 
-test('should remove xml declaration', () => {
+test('remove xml declaration', () => {
+   const svg = imported.get('xml-rect');
+   const tokens = tokenize(parse(svg));
    const firstTag = tokens[0];
 
    expect(isTag(firstTag)).toBe(true);
 
    if (isTag(firstTag)) {
-      expect(firstTag.tagName === 'xml').toBe(false);
+      expect(firstTag.tagName).not.toBe('xml');
    }
 });
-/*
-it('should remove `<defs />` and its children if `removeTags` option is on', function() {
-   var svgWithStyle = require('raw!./fixtures/style-inserted.svg');
-   var processedStyleInsertedSVG = SVGInlineLoader.getExtractedSVG(
-      svgWithStyle,
-      { removeTags: true }
-   );
-   var reTokenizedStyleInsertedSVG = tokenize(processedStyleInsertedSVG);
 
-   reTokenizedStyleInsertedSVG.forEach(function(tag) {
-      assert.isTrue(tag.tagName !== 'style' && tag.tagName !== 'defs');
+test('remove <defs /> and its children if removeTags is true', () => {
+   const svg = imported.get('style-inserted');
+   const tokens = tokenize(parse(svg, { removeTags: true }));
+
+   tokens.filter(isTag).forEach(t => {
+      expect(t.tagName).not.toBe('style');
+      expect(t.tagName).not.toBe('defs');
    });
 });
 
-it('should apply prefixes to class names', function() {
-   var svgWithStyle = require('raw!./fixtures/style-inserted.svg');
-   var processedStyleInsertedSVG = SVGInlineLoader.getExtractedSVG(
-      svgWithStyle,
-      { classPrefix: 'test.prefix-' }
-   );
+test('removes tags listed in removingTags option', () => {
+   const svg = imported.get('removing-tags');
+   const tokens = tokenize(parse(svg, { removeTags: true, tagsToRemove }));
 
-   // Are all 10 classes prefixed in <style>
-   assert.isTrue(
-      processedStyleInsertedSVG.match(/\.test\.prefix-/g).length === 10
-   );
-   // Is class attribute prefixed
-   assert.isTrue(
-      processedStyleInsertedSVG.match(/class="test\.prefix-/g).length === 1
-   );
-});
-
-it('should apply prefixes to ids', function() {
-   var svgWithStyle = require('raw!./fixtures/with-ids.svg');
-   var processedStyleInsertedSVG = SVGInlineLoader.getExtractedSVG(
-      svgWithStyle,
-      { idPrefix: 'test.prefix-' }
-   );
-
-   assert.isTrue(
-      processedStyleInsertedSVG.match(/test\.prefix-foo/g).length === 3
-   );
-   // // replaces xlink:href=
-   assert.isTrue(processedStyleInsertedSVG.match(/xlink:href=/g).length === 1);
-   // // replaces url(#foo)
-   assert.isTrue(
-      processedStyleInsertedSVG.match(/url\(#test\.prefix-foo\)/g).length === 1
-   );
-});
-
-it('should be able to specify tags to be removed by `removingTags` option', function() {
-   var svgRemovingTags = require('raw!./fixtures/removing-tags.svg');
-   var tobeRemoved = require('./fixtures/removing-tags-to-be-removed.json');
-   var tobeRemain = require('./fixtures/removing-tags-to-be-remain.json');
-
-   var processedStyleInsertedSVG = SVGInlineLoader.getExtractedSVG(
-      svgRemovingTags,
-      { removeTags: true, removingTags: tobeRemoved }
-   );
-   var reTokenizedStyleInsertedSVG = tokenize(processedStyleInsertedSVG);
-
-   reTokenizedStyleInsertedSVG.forEach(function(tag) {
-      assert.isTrue(_.includes(tobeRemain, tag.tagName));
+   tokens.filter(isTag).forEach(t => {
+      expect(tagsToRemove.includes(t.tagName)).toBe(false);
+      expect(tagsToKeep.includes(t.tagName)).toBe(true);
    });
 });
 
-// TODO: after adopting object-returning tokenizer/parser, this needs to be cleaned-up.
-it('should not remove width/height from non-svg element', function() {
-   reTokenized.forEach(function(tag) {
-      if (tag.tagName === 'rect' && tag.type === 'StartTag') {
-         tag.attributes.forEach(function(attributeToken) {
-            if (attributeToken[0] === 'x') {
-               assert.isTrue(attributeToken[1] === '10');
-            } else if (attributeToken[0] === 'y') {
-               assert.isTrue(attributeToken[1] === '50');
-            } else if (attributeToken[0] === 'width') {
-               assert.isTrue(attributeToken[1] === '100');
-            } else if (attributeToken[0] === 'height') {
-               assert.isTrue(attributeToken[1] === '200');
-            }
+test('do not remove width/height from non-svg element', () => {
+   const svg = imported.get('xml-rect');
+   const tokens = tokenize(parse(svg));
+   const keyValues: Map<string, string> = new Map([
+      ['x', '10'],
+      ['y', '50'],
+      ['width', '100'],
+      ['height', '200']
+   ]);
+
+   tokens
+      .filter(isStartTag)
+      .filter(t => t.tagName == 'rect')
+      .forEach(t => {
+         t.attributes.forEach(a => {
+            const key = a[0];
+            const value = a[1];
+
+            expect(keyValues.has(key));
+            expect(keyValues.get(key)).toBe(value);
          });
-      }
+      });
+});
+
+test('expands self-closing tags', function() {
+   const svg = imported.get('xml-rect');
+   const tokens = tokenize(parse(svg));
+
+   tokens
+      .filter(isStartTag)
+      .filter(t => t.tagName == 'rect' && t.selfClosing !== undefined)
+      .forEach(t => {
+         expect(t.selfClosing).toBe(false);
+      });
+});
+
+test('removes attributes listed in removingTagAttrs option', () => {
+   const svg = imported.get('style-inserted');
+   const attributesToRemove = ['id'];
+   const tokens = tokenize(parse(svg, { attributesToRemove }));
+
+   tokens.filter(isStartTag).forEach(t => {
+      t.attributes.forEach(a => {
+         expect(attributesToRemove.includes(a[0])).toBe(false);
+      });
    });
 });
 
-// TODO: HTML allows some self-closing tags, needs to add spec
-it('should expand self-closing tag', function() {
-   reTokenized.forEach(function(tag) {
-      // simpleHTMLTokenizer sets `tag.selfClosing` prop undefined when it is a closing tag.
-      if (tag.tagName === 'rect' && typeof tag.selfClosing !== 'undefined') {
-         assert.isFalse(tag.selfClosing);
-      }
-   });
-});
+test('warn about attributes listed in warnTagAttrs option', () => {
+   const svg = imported.get('with-ids');
+   const warnAttributes = ['id'];
+   const warn = jest.fn();
 
-it('should be able to specify attributes to be removed by `removingTagAttrs` option', function() {
-   var svgRemoveTagAttrs = require('raw!./fixtures/style-inserted.svg');
-   var tobeRemoved = require('./fixtures/removing-attrs-to-be-removed.json');
+   console.warn = warn;
 
-   var processedSVG = SVGInlineLoader.getExtractedSVG(svgRemoveTagAttrs, {
-      removingTagAttrs: tobeRemoved
-   });
-   var reTokenizedSVG = tokenize(processedSVG);
+   tokenize(parse(svg, { warnAttributes }));
 
-   reTokenizedSVG.forEach(function(tag) {
-      if (tag.attributes) {
-         tag.attributes.forEach(function(attr) {
-            assert.isFalse(_.includes(tobeRemoved, attr[0]));
-         });
-      }
-   });
-});
-it('should be able to warn about tagsAttrs to be removed listed in `warnTagAttrs` option via console.log', function() {
-   var svg = require('raw!./fixtures/with-ids.svg');
-   var tobeWarned = ['id'];
-   var oldConsoleWarn = console.warn;
-   var warnings = [];
-   console.warn = createSpy(function(str) {
-      warnings.push(str);
-   });
-   var processedSVG = SVGInlineLoader.getExtractedSVG(svg, {
-      warnTagAttrs: tobeWarned
-   });
-   var reTokenizedSVG = tokenize(processedSVG);
-   expect(console.warn).to.have.been.called.with(
-      'svg-inline-loader: tag path has forbidden attrs: id'
+   expect(warn).toHaveBeenCalledWith(
+      `${loaderName}: tag path has forbidden attrs: ${warnAttributes[0]}`
    );
-   console.warn = oldConsoleWarn; // reset console back
 });
 
-it('should be able to specify tags to be warned about by `warnTags` option', function() {
-   var svg = require('raw!./fixtures/removing-tags.svg');
-   var tobeWarnedAbout = ['title', 'desc', 'defs', 'style', 'image'];
-   var oldConsoleWarn = console.warn;
-   var warnings = [];
-   console.warn = createSpy(function(str) {
-      warnings.push(str);
-   });
-   var processedStyleInsertedSVG = SVGInlineLoader.getExtractedSVG(svg, {
-      warnTags: tobeWarnedAbout
-   });
-   var reTokenizedStyleInsertedSVG = tokenize(processedStyleInsertedSVG);
+test('warn about tags listed in warnTags option', () => {
+   const svg = imported.get('removing-tags');
+   const warnTags = ['title', 'desc', 'defs', 'style', 'image'];
+   const warn = jest.fn();
 
-   expect(console.warn).to.have.been.called();
-   expect(console.warn).to.have.been.called.min(3);
-   expect(console.warn).to.have.been.called.with(
-      'svg-inline-loader: forbidden tag style'
-   );
-   console.warn = oldConsoleWarn; // reset console back
+   console.warn = warn;
+
+   tokenize(parse(svg, { warnTags }));
+
+   expect(warn).toHaveBeenCalledTimes(11);
+   expect(warn).toHaveBeenLastCalledWith(`${loaderName}: forbidden tag style`);
 });
-*/

@@ -10,6 +10,7 @@ import {
    warnAboutTags
 } from './transformer';
 import { isTag, Tag, isStartTag } from './conditions';
+import { loaderName } from './options';
 
 test("removes a tag's size attributes", () => {
    const tag = mock.startTag('svg', {
@@ -53,7 +54,7 @@ test('warns about named attributes', () => {
 
    expect(warn).toHaveBeenCalledTimes(1);
    expect(warn).toHaveBeenCalledWith(
-      `svg-inline-loader: tag svg has forbidden attrs: ${bad.join(', ')}`
+      `${loaderName}: tag svg has forbidden attrs: ${bad.join(', ')}`
    );
    // no attributes are removed
    expect(out.attributes.map(a => a[0])).toEqual(bad.concat('height'));
@@ -102,7 +103,7 @@ test('warns about named tags', () => {
       fn(t);
       if (isStartTag(t)) {
          expect(warn).toHaveBeenCalledWith(
-            `svg-inline-loader: forbidden tag ${t.tagName}`
+            `${loaderName}: forbidden tag ${t.tagName}`
          );
       } else {
          expect(warn).not.toHaveBeenCalled();

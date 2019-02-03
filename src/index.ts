@@ -33,6 +33,9 @@ export const normalize = (text: string): string => {
    return clean.trim();
 };
 
+/**
+ * Clean SVG source then tokenize and convert back to an XML string.
+ */
 export function parse(svgText: string, userOptions?: Partial<Options>) {
    const clean = normalize(svgText);
    let tags: Token[];

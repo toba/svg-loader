@@ -1,4 +1,5 @@
 import '@toba/test';
+import { lipsum } from '@toba/test';
 import { mock } from './__mocks__';
 import { TokenType } from './conditions';
 import { escape, keyValue, keyValueList, tokenString } from './generator';
@@ -44,4 +45,31 @@ test('renders start tag', () => {
 
    t = mock.startTag('line', { one: '1', two: 'doce', focus: null });
    expect(fn(t)).toBe('<line one="1" two="doce" focus>');
+});
+
+test('renders end tag', () => {
+   const fn = tokenString[TokenType.EndTag];
+
+   expect(fn).toBeDefined();
+
+   const t = mock.endTag('svg');
+   expect(fn(t)).toBe('</svg>');
+});
+
+test('renders characters', () => {
+   const fn = tokenString[TokenType.Chars];
+
+   expect(fn).toBeDefined();
+
+   const t = mock.text(lipsum);
+   expect(fn(t)).toBe(lipsum);
+});
+
+test('renders comment', () => {
+   const fn = tokenString[TokenType.Comment];
+
+   expect(fn).toBeDefined();
+
+   const t = mock.comment('this is great');
+   expect(fn(t)).toBe('<!--this is great-->');
 });
