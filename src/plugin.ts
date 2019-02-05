@@ -1,7 +1,10 @@
 import webpack from 'webpack';
+import SVGO from 'svgo';
+import { SvgoConfig } from './svgo';
 
 interface SvgPluginOptions {
    id: string;
+   svgo?: SvgoConfig;
 }
 
 /**
@@ -17,6 +20,8 @@ export class HtmlSvgPlugin extends webpack.Plugin {
    }
 
    apply(compiler: webpack.Compiler): void {
+      const svgo = new SVGO();
+
       compiler.hooks.done.tap('HtmlSvgPlugin', stats => {
          console.log('svg done');
       });
