@@ -1,3 +1,5 @@
+import webpack from 'webpack';
+import loaderUtils from 'loader-utils';
 import { is } from '@toba/tools';
 import { tokenize, Token } from 'simple-html-tokenizer';
 import { Options, loaderName } from './options';
@@ -49,3 +51,16 @@ export function parse(svgText: string, userOptions?: Partial<Options>) {
    }
    return generate(transform(tags, userOptions));
 }
+/**
+ * @see https://webpack.js.org/contribute/writing-a-loader/#guidelines
+ */
+export const svgLoader: webpack.loader.Loader = function(text: string): string {
+   if (is.callable(this.cacheable)) {
+      this.cacheable();
+   }
+   const options = is.empty(this.query)
+      ? undefined
+      : loaderUtils.parseQuery(this.query);
+
+   return 'module.exports = ' + JSON.stringify(parse(text, options));
+};
