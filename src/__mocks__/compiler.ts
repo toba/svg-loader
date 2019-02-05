@@ -25,7 +25,8 @@ export function compile(
             {
                test: /\.svg$/,
                use: {
-                  loader: path.resolve(__dirname, '..', 'index.ts')
+                  loader: path.resolve(__dirname, '..', 'index.ts'),
+                  options
                }
             }
          ]
