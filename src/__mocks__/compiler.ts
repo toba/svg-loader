@@ -8,11 +8,11 @@ const memFS = new memoryfs();
  * Test loader.
  * @see https://webpack.js.org/contribute/writing-a-loader/#testing
  */
-export function compiler(
+export function compile(
    fileName: string,
    options = {}
 ): Promise<webpack.Stats> {
-   const bundler = webpack({
+   const compiler = webpack({
       context: __dirname,
       mode: 'production',
       entry: `./${fileName}`,
@@ -33,10 +33,10 @@ export function compiler(
       }
    });
 
-   bundler.outputFileSystem = memFS;
+   compiler.outputFileSystem = memFS;
 
    return new Promise((resolve, reject) => {
-      bundler.run((err, stats) => {
+      compiler.run((err, stats) => {
          if (err !== null) {
             reject(err);
          } else if (stats.hasErrors()) {
