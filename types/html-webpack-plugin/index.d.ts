@@ -1,4 +1,4 @@
-import { Plugin } from 'webpack';
+import { compilation, Plugin } from 'webpack';
 import { AsyncSeriesWaterfallHook } from 'tapable';
 import { Options as HtmlMinifierOptions } from 'html-minifier';
 
@@ -9,13 +9,43 @@ type Required<T> = T extends object
 // https://stackoverflow.com/questions/48215950/exclude-property-from-type
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
+type SortCallback = (entryNameA: string, entryNameB: string) => number;
+
+declare module HtmlWebpackPlugin {}
+
 export = HtmlWebpackPlugin;
 
+// Custom typings until this PR is merged:
+// https://github.com/jantimon/html-webpack-plugin/pull/1149
 declare class HtmlWebpackPlugin extends Plugin {
+   /**
+    * The major version number of this plugin
+    */
+   static version: number;
+
+   /**
+    * A static helper to get the hooks for this plugin
+    *
+    * Usage: HtmlWebpackPlugin.getHooks(compilation).HOOK_NAME.tapAsync('YourPluginName', () => { ... });
+    */
+   static getHooks(
+      compilation: compilation.Compilation
+   ): HtmlWebpackPlugin.Hooks;
+
+   /**
+    * Static helper to create a tag object to be injected into the dom
+    *
+    * @param tagName the name of the tage e.g. 'div'
+    * @param attributes tag attributes e.g. `{ 'class': 'example', disabled: true }`
+    */
+   static createHtmlTagObject(
+      tagName: string,
+      attributes: { [attributeName: string]: string | boolean },
+      innerHTML: string
+   ): HtmlWebpackPlugin.HtmlTagObject;
+
    constructor(options?: HtmlWebpackPlugin.Options);
 }
-
-type ChunkSorter = (entryA: string, entryB: string) => number;
 
 declare namespace HtmlWebpackPlugin {
    type MinifyOptions = HtmlMinifierOptions;
@@ -37,7 +67,7 @@ declare namespace HtmlWebpackPlugin {
        * Allows to control how chunks should be sorted before they are included to the html.
        * Default: `'auto'`.
        */
-      chunksSortMode?: 'auto' | 'manual' | ChunkSorter;
+      chunksSortMode?: 'auto' | 'manual' | SortCallback;
       /**
        * List all entries which should not be injeccted
        */

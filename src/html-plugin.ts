@@ -1,3 +1,4 @@
+///<reference path="../types/html-webpack-plugin/index.d.ts" />
 import webpack from 'webpack';
 import SVGO from 'svgo';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
