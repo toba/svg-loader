@@ -1,5 +1,5 @@
 import SVGO from 'svgo';
-import { Plugin, Compiler } from 'webpack';
+import { Compiler } from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { SvgoConfig } from './svgo';
 
@@ -16,17 +16,17 @@ interface SvgPluginOptions {
 /**
  * @see https://medium.com/webpack/webpack-4-migration-guide-for-plugins-loaders-20a79b927202
  * @see https://blog.johnnyreilly.com/2018/01/finding-webpack-4-use-map.html
+ * @see https://github.com/DustinJackson/html-webpack-inline-source-plugin
  */
-export class HtmlSvgPlugin implements Plugin {
+export class HtmlSvgPlugin {
    options: SvgPluginOptions;
 
    constructor(options: SvgPluginOptions) {
-      //super();
       this.options = options;
    }
 
    apply(compiler: Compiler): void {
-      const svgo = new SVGO();
+      //const svgo = new SVGO();
 
       compiler.hooks.compilation.tap(name, compilation => {
          HtmlWebpackPlugin.getHooks(compilation).alterAssetTagGroups.tapAsync(
@@ -41,7 +41,7 @@ export class HtmlSvgPlugin implements Plugin {
                //    htmlPluginData
                // );
 
-               cb(null, '');
+               cb(null, data);
             }
          );
       });
