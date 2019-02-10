@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`works 1`] = `"module.exports = \\"<svg viewBox=\\\\\\"0 0 120 120\\\\\\" xmlns=\\\\\\"http://www.w3.org/2000/svg\\\\\\"><rect x=\\\\\\"10\\\\\\" y=\\\\\\"50\\\\\\" width=\\\\\\"100\\\\\\" height=\\\\\\"200\\\\\\"></rect></svg>\\""`;

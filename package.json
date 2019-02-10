@@ -1,5 +1,5 @@
 {
-   "name": "@toba/svg-loader",
+   "name": "@toba/html-webpack-inline-svg",
    "version": "1.0.0",
    "description": "toba svg-loader module",
    "private": false,
@@ -32,6 +32,9 @@
       "@types/webpack": "^4.4.24",
       "simple-html-tokenizer": "^0.5.7",
       "webpack": "^4.29.0"
+   },
+   "resolutions": {
+      "ajv": "6.8.1"
    },
    "repository": {
       "type": "git",
