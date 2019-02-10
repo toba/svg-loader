@@ -1,6 +1,7 @@
 import svgo from 'svgo';
 
 /**
+ * Whether to remove white space. The default for all types is `true`.
  * @see https://github.com/svg/svgo/blob/master/plugins/cleanupAttrs.js
  */
 interface CleanAttributesConfig {
@@ -25,7 +26,18 @@ interface InlineStylesConfig {
    usePseudos: string[];
 }
 
-export interface SvgoConfig {
+type Attribute = string | { [key: string]: string | boolean };
+
+/**
+ * @see https://github.com/svg/svgo/blob/master/plugins/addAttributesToSVGElement.js
+ */
+export interface AddAttributes {
+   attribute?: Attribute;
+   attributes?: Attribute[];
+}
+
+export interface SvgoPluginConfig {
+   [key: string]: boolean | object | undefined;
    /**
     * Remove white space from attributes.
     */
@@ -34,4 +46,6 @@ export interface SvgoConfig {
     * Move and merge styles from <style> elements to element style attributes.
     */
    inlineStyles?: boolean | InlineStylesConfig;
+
+   addAttributesToSVGElement?: AddAttributes;
 }

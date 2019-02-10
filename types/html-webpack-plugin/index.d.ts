@@ -46,6 +46,32 @@ declare module 'html-webpack-plugin' {
 
    type SortCallback = (entryNameA: string, entryNameB: string) => number;
 
+   /**
+    * A tag element according to the htmlWebpackPlugin object notation
+    */
+   interface HtmlTagObject {
+      /**
+       * Attributes of the html tag
+       * E.g. `{'disabled': true, 'value': 'demo'}`
+       */
+      attributes: {
+         [attributeName: string]: string | boolean;
+      };
+      /**
+       * The tag name e.g. `'div'`
+       */
+      tagName: string;
+      /**
+       * The inner HTML
+       */
+      innerHTML?: string;
+      /**
+       * Whether this html must not contain innerHTML
+       * @see https://www.w3.org/TR/html5/syntax.html#void-elements
+       */
+      voidTag: boolean;
+   }
+
    declare namespace HtmlWebpackPlugin {
       /**
        * The plugin options
@@ -248,32 +274,6 @@ declare module 'html-webpack-plugin' {
             outputName: string;
             plugin: HtmlWebpackPlugin;
          }>;
-      }
-
-      /**
-       * A tag element according to the htmlWebpackPlugin object notation
-       */
-      interface HtmlTagObject {
-         /**
-          * Attributes of the html tag
-          * E.g. `{'disabled': true, 'value': 'demo'}`
-          */
-         attributes: {
-            [attributeName: string]: string | boolean;
-         };
-         /**
-          * The tag name e.g. `'div'`
-          */
-         tagName: string;
-         /**
-          * The inner HTML
-          */
-         innerHTML?: string;
-         /**
-          * Whether this html must not contain innerHTML
-          * @see https://www.w3.org/TR/html5/syntax.html#void-elements
-          */
-         voidTag: boolean;
       }
    }
 }

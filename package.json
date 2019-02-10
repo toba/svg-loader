@@ -30,7 +30,6 @@
       "@types/memory-fs": "^0.3.2",
       "@types/svgo": "^1.0.1",
       "@types/webpack": "^4.4.24",
-      "simple-html-tokenizer": "^0.5.7",
       "webpack": "^4.29.0"
    },
    "resolutions": {

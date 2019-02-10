@@ -1,17 +1,29 @@
 import SVGO from 'svgo';
+import fs from 'fs';
+import path from 'path';
+import { Encoding } from '@toba/tools';
 import { Compiler } from 'webpack';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import { SvgoConfig } from './svgo';
+import {
+   default as HtmlWebpackPlugin,
+   HtmlTagObject
+} from 'html-webpack-plugin';
 
 const name = 'html-webpack-inline-svg';
 
 interface SvgPluginOptions {
    /**
-    * SVG files to be inlined.
+    * SVG file paths relative to the Webpack context.
     */
    files: string[];
-   svgo?: SvgoConfig;
+   svgo?: SVGO.Options;
 }
+
+const slugify = (name: string) => {
+   if (name.includes('/')) {
+      name = name.substr(name.lastIndexOf('/') + 1);
+   }
+   return name.replace('.svg', '').replace(/\s/, '');
+};
 
 /**
  * @see https://medium.com/webpack/webpack-4-migration-guide-for-plugins-loaders-20a79b927202
@@ -21,25 +33,69 @@ interface SvgPluginOptions {
 export class HtmlSvgPlugin {
    options: SvgPluginOptions;
 
-   constructor(options: SvgPluginOptions) {
-      this.options = options;
+   constructor(options?: SvgPluginOptions) {
+      this.options = options === undefined ? { files: [] } : options;
    }
 
    apply(compiler: Compiler): void {
-      //const svgo = new SVGO();
+      /**
+       * ID attribute will be updated to match each SVG filename.
+       */
+      const addID = { id: '' };
+      /**
+       * Plugin configurations.
+       * @see https://github.com/svg/svgo#what-it-can-do
+       */
+      const plugins: { [key: string]: string | boolean | object } = {
+         addAttributesToSVGElement: { attributes: [addID] },
+         removeXMLNS: true,
+         sortAttrs: true,
+         removeViewBox: false,
+         removeDimensions: true
+      };
+      const svgo = new SVGO({
+         plugins: Object.keys(plugins).map(
+            key => ({ [key]: plugins[key] } as any)
+         )
+      });
 
       compiler.hooks.compilation.tap(name, compilation => {
+         if (this.options.files.length == 0) {
+            return;
+         }
+         const options = compilation.compiler.options;
+         const context: string =
+            options.context !== undefined ? options.context : __dirname;
+
          HtmlWebpackPlugin.getHooks(compilation).alterAssetTagGroups.tapAsync(
             name,
-            (data, cb) => {
-               //const plugin: HtmlWebpackPlugin = data.plugin;
-               //var regexStr = htmlPluginData.plugin.options.inlineSource;
+            async (data, cb) => {
+               const optimizers: Promise<any>[] = [];
+               const files = this.options.files.reduce((map, name) => {
+                  map.set(
+                     slugify(name),
+                     fs.readFileSync(path.resolve(context, name), {
+                        encoding: Encoding.UTF8
+                     })
+                  );
+                  return map;
+               }, new Map<string, string>());
 
-               // var result = self.processTags(
-               //    compilation,
-               //    regexStr,
-               //    htmlPluginData
-               // );
+               files.forEach((text, id) => {
+                  addID.id = id;
+                  optimizers.push(svgo.optimize(text));
+               });
+
+               const svgs = await Promise.all(optimizers);
+
+               const tag: HtmlTagObject = {
+                  tagName: 'div',
+                  attributes: {},
+                  innerHTML: svgs.map(svg => svg.data).join(),
+                  voidTag: false
+               };
+
+               data.bodyTags.push(tag);
 
                cb(null, data);
             }
