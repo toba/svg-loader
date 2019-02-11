@@ -60,9 +60,9 @@ export class HtmlSvgPlugin {
       });
 
       compiler.hooks.compilation.tap(name, compilation => {
-         if (this.options.files.length == 0) {
-            return;
-         }
+         // if (this.options.files.length == 0) {
+         //    return;
+         // }
          const options = compilation.compiler.options;
          const context: string =
             options.context !== undefined ? options.context : __dirname;
@@ -70,16 +70,25 @@ export class HtmlSvgPlugin {
          HtmlWebpackPlugin.getHooks(compilation).alterAssetTagGroups.tapAsync(
             name,
             async (data, cb) => {
+               const assets = compilation.assets;
                const optimizers: Promise<any>[] = [];
-               const files = this.options.files.reduce((map, name) => {
-                  map.set(
-                     slugify(name),
-                     fs.readFileSync(path.resolve(context, name), {
-                        encoding: Encoding.UTF8
-                     })
-                  );
-                  return map;
-               }, new Map<string, string>());
+               const files = Object.keys(assets)
+                  .filter(name => name.endsWith('.svg'))
+                  .reduce((map, name) => {
+                     map.set(slugify(name), assets[name]._value);
+                     return map;
+                  }, new Map<string, string>());
+
+               this.options.files
+                  .filter(name => !files.has(slugify(name)))
+                  .forEach(name => {
+                     files.set(
+                        slugify(name),
+                        fs.readFileSync(path.resolve(context, name), {
+                           encoding: Encoding.UTF8
+                        })
+                     );
+                  });
 
                files.forEach((text, id) => {
                   addID.id = id;

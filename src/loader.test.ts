@@ -1,10 +1,10 @@
 import '@toba/test';
+import { Encoding } from '@toba/tools';
 import path from 'path';
 import webpack from 'webpack';
 import memoryfs from 'memory-fs';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { HtmlSvgPlugin } from './plugin';
-import { readFileText } from '@toba/test';
 
 const memFS = new memoryfs();
 
@@ -20,6 +20,16 @@ export function compile(): Promise<webpack.Stats> {
       output: {
          path: path.resolve(__dirname),
          filename: 'bundle.js'
+      },
+      module: {
+         rules: [
+            {
+               test: /\.svg$/,
+               use: {
+                  loader: path.resolve(__dirname, '.', 'loader.ts')
+               }
+            }
+         ]
       },
       plugins: [new HtmlWebpackPlugin(), new HtmlSvgPlugin()]
    });
@@ -39,13 +49,15 @@ export function compile(): Promise<webpack.Stats> {
    });
 }
 
-beforeAll(() =>
-   Promise.all(
-      // load example SVG files
-      ['xml-rect', 'style-inserted', 'with-ids', 'removing-tags'].map(name =>
-         readFileText(path.resolve(__dirname, '__mocks__', name + '.svg')).then(
-            text => imported.set(name, text)
-         )
-      )
-   )
-);
+test('works', async done => {
+   const stats = await compile();
+
+   expect(stats).toBeDefined();
+
+   const htmlFile = path.resolve(__dirname, 'index.html');
+   memFS.readFile(htmlFile, Encoding.UTF8, (err, data) => {
+      expect(err).toBeNull();
+      expect(data).toMatchSnapshot();
+      done();
+   });
+});
