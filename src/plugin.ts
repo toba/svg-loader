@@ -9,6 +9,7 @@ import {
 } from 'html-webpack-plugin';
 
 const name = 'html-webpack-inline-svg';
+const svgLoaderPath = path.resolve(__dirname, '.', 'loader.ts');
 
 interface SvgPluginOptions {
    /**
@@ -60,12 +61,15 @@ export class HtmlSvgPlugin {
       });
 
       compiler.hooks.compilation.tap(name, compilation => {
-         // if (this.options.files.length == 0) {
-         //    return;
-         // }
          const options = compilation.compiler.options;
          const context: string =
             options.context !== undefined ? options.context : __dirname;
+
+         compilation.hooks.normalModuleLoader.tap(name, (context, mod) => {
+            if (mod.request.endsWith('.svg')) {
+               mod.loaders.unshift({ loader: svgLoaderPath });
+            }
+         });
 
          HtmlWebpackPlugin.getHooks(compilation).alterAssetTagGroups.tapAsync(
             name,

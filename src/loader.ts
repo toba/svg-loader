@@ -12,6 +12,7 @@ const svgLoader: webpack.loader.Loader = function(
    this.cacheable(true);
    const fileName = this.request.substr(this.request.lastIndexOf('/') + 1);
    this.emitFile(fileName, text, sourceMap);
+   return '';
 };
 
 module.exports = svgLoader;

@@ -21,16 +21,16 @@ export function compile(): Promise<webpack.Stats> {
          path: path.resolve(__dirname),
          filename: 'bundle.js'
       },
-      module: {
-         rules: [
-            {
-               test: /\.svg$/,
-               use: {
-                  loader: path.resolve(__dirname, '.', 'loader.ts')
-               }
-            }
-         ]
-      },
+      // module: {
+      //    rules: [
+      //       {
+      //          test: /\.svg$/,
+      //          use: {
+      //             loader: path.resolve(__dirname, '.', 'loader.ts')
+      //          }
+      //       }
+      //    ]
+      // },
       plugins: [new HtmlWebpackPlugin(), new HtmlSvgPlugin()]
    });
 
