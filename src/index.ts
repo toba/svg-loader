@@ -9,8 +9,13 @@ import {
    HtmlTagObject
 } from 'html-webpack-plugin';
 
+/**
+ * Loader extension will either be `js` or `ts` depending on whether its the
+ * test or distributed version.
+ */
+const ext = __dirname.includes('node_modules') ? 'js' : 'ts';
 const name = 'html-webpack-inline-svg';
-const svgLoaderPath = path.resolve(__dirname, '.', 'loader.ts');
+const svgLoaderPath = path.resolve(__dirname, '.', `loader.${ext}`);
 
 interface SvgPluginOptions {
    /**
