@@ -1,5 +1,6 @@
 import webpack from 'webpack';
 import { RawSourceMap } from 'source-map';
+import { slugify } from './';
 
 /**
  * @see https://webpack.js.org/contribute/writing-a-loader/#guidelines
@@ -12,7 +13,8 @@ const svgLoader: webpack.loader.Loader = function(
    this.cacheable(true);
    const fileName = this.request.substr(this.request.lastIndexOf('/') + 1);
    this.emitFile(fileName, text, sourceMap);
-   return '';
+   
+   return `module.exports = "${slugify(fileName)}";`;
 };
 
 module.exports = svgLoader;
