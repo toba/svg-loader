@@ -1,7 +1,8 @@
 import SVGO from 'svgo';
 import fs from 'fs';
 import path from 'path';
-import { Encoding } from '@toba/tools';
+import { Encoding, slug } from '@toba/tools';
+import { OptimizedSvg } from './svgo';
 import { Compiler } from 'webpack';
 import {
    default as HtmlWebpackPlugin,
@@ -13,38 +14,56 @@ const svgLoaderPath = path.resolve(__dirname, '.', 'loader.ts');
 
 interface SvgPluginOptions {
    /**
-    * SVG file paths relative to the Webpack context.
+    * SVG file paths relative to the Webpack context (base path). By default
+    * this is empty and only `import`ed or `require`ed SVGs are included.
     */
    files: string[];
+   /**
+    * Whether to inline SVG files `require`ed or `import`ed. The default is
+    * `true`.
+    */
+   includeImports: boolean;
    svgo?: SVGO.Options;
 }
 
-export const slugify = (name: string) => {
-   if (name.includes('/')) {
-      name = name.substr(name.lastIndexOf('/') + 1);
-   }
-   return name.replace('.svg', '').replace(/\s/, '');
+const defaultOptions: SvgPluginOptions = {
+   files: [],
+   includeImports: true
 };
 
 /**
- * @see https://medium.com/webpack/webpack-4-migration-guide-for-plugins-loaders-20a79b927202
- * @see https://blog.johnnyreilly.com/2018/01/finding-webpack-4-use-map.html
+ * Convert SVG file path to a slug that can be used as an ID.
+ */
+export const slugify = (filePath: string): string => {
+   if (filePath.includes('/')) {
+      filePath = filePath.substr(filePath.lastIndexOf('/') + 1);
+   }
+   return slug(filePath.replace('.svg', '')) as string;
+};
+
+/**
+ *
  * @see https://github.com/DustinJackson/html-webpack-inline-source-plugin
  */
 export class HtmlSvgPlugin {
    options: SvgPluginOptions;
 
-   constructor(options?: SvgPluginOptions) {
-      this.options = options === undefined ? { files: [] } : options;
+   constructor(options: Partial<SvgPluginOptions>) {
+      this.options =
+         options === undefined
+            ? defaultOptions
+            : { ...defaultOptions, ...options };
    }
 
    apply(compiler: Compiler): void {
       /**
-       * ID attribute will be updated to match each SVG filename.
+       * Option object for `addAttributesToSVGElement` SVGO plugin which will
+       * be updated so the ID attributed of each inline SVG corresponds to its
+       * original filename.
        */
       const addID = { id: '' };
       /**
-       * Plugin configurations.
+       * SVGO plugin configurations.
        * @see https://github.com/svg/svgo#what-it-can-do
        */
       const plugins: { [key: string]: string | boolean | object } = {
@@ -59,46 +78,56 @@ export class HtmlSvgPlugin {
             key => ({ [key]: plugins[key] } as any)
          )
       });
+      const pluginOptions = this.options;
 
+      // tap into main Webpack compilation completion
       compiler.hooks.compilation.tap(name, compilation => {
          const options = compilation.compiler.options;
          const basePath: string =
             options.context !== undefined ? options.context : __dirname;
 
-         // Add SVG loader
-         compilation.hooks.normalModuleLoader.tap(
-            name,
-            (_context, mod: any) => {
-               if (mod.request.endsWith('.svg')) {
-                  mod.loaders.unshift({ loader: svgLoaderPath });
+         if (pluginOptions.includeImports) {
+            // add loader for imported SVG files
+            compilation.hooks.normalModuleLoader.tap(
+               name,
+               (_context, mod: any) => {
+                  if (mod.request.endsWith('.svg')) {
+                     mod.loaders.unshift({ loader: svgLoaderPath });
+                  }
                }
-            }
-         );
+            );
+         }
 
          HtmlWebpackPlugin.getHooks(compilation).alterAssetTagGroups.tapAsync(
             name,
             async (data, cb) => {
+               /** All assets in the Webpack compilation */
                const assets = compilation.assets;
-               const optimizers: Promise<any>[] = [];
-               // imported files become assets in the compilation
-               const files = Object.keys(assets)
-                  .filter(name => name.endsWith('.svg'))
-                  .reduce((map, name) => {
-                     map.set(slugify(name), assets[name]._value);
-                     return map;
-                  }, new Map<string, string>());
+               /** SVGO optimization calls */
+               const optimizers: Promise<OptimizedSvg>[] = [];
+               /** SVG content mapped to filename slug */
+               const files = new Map<string, string>();
+
+               if (pluginOptions.includeImports) {
+                  // added loader makes imported SVGs assets in the compilation
+                  Object.keys(assets)
+                     .filter(name => name.endsWith('.svg'))
+                     .forEach(name =>
+                        files.set(slugify(name), assets[name]._value)
+                     );
+               }
 
                this.options.files
-                  // do not add files that were already imported
+                  // do not add duplicate files
                   .filter(name => !files.has(slugify(name)))
-                  .forEach(name => {
+                  .forEach(name =>
                      files.set(
                         slugify(name),
                         fs.readFileSync(path.resolve(basePath, name), {
                            encoding: Encoding.UTF8
                         })
-                     );
-                  });
+                     )
+                  );
 
                // SVGO optimize the content of every file
                files.forEach((text, id) => {
@@ -106,6 +135,7 @@ export class HtmlSvgPlugin {
                   optimizers.push(svgo.optimize(text));
                });
 
+               /** SVGO optimized SVG */
                const symbols = await Promise.all(optimizers);
 
                // TODO: remove SVG assets from bundle

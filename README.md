@@ -9,6 +9,8 @@
 
 # Toba SVG loader for Webpack
 
+
+
 ```sh
 yarn add @toba/svg-loader --dev
 ```

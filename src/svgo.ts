@@ -1,51 +1,80 @@
 import svgo from 'svgo';
 
 /**
- * Whether to remove white space. The default for all types is `true`.
- * @see https://github.com/svg/svgo/blob/master/plugins/cleanupAttrs.js
+ * @see https://github.com/svg/svgo/blob/master/docs/how-it-works/en.md#31-types
  */
-interface CleanAttributesConfig {
-   newlines: boolean;
-   trim: boolean;
+enum PluginType {
    /**
-    * Whether to remove multiple spaces. The default is `true`.
+    * Plugin works with the full AST and must returns the same.
     */
-   spaces: boolean;
+   Full = 'full',
+   /**
+    * Plugin works only with one current item, inside a "from the outside into
+    * the depths" recursive loop.
+    */
+   PerItem = 'perItem',
+   /**
+    * Plugin works only with one current item, inside a "from the depths to the
+    * outside" recursive loop (useful when you need to collapse elements one
+    * after other).
+    */
+   PerItemReverse = 'perItemReverse'
+}
+
+interface Instruction {
+   processingInstruction: { [key: string]: string };
+}
+interface Comment {
+   comment: string;
+}
+interface DocType {
+   doctype: string;
+}
+interface Namespaced {
+   prefix: string;
+   local: string;
+}
+interface Attribute extends Namespaced {
+   name: string;
+   value: string;
+}
+interface Element extends Namespaced {
+   elem: string;
+   attrs: { [key: string]: Attribute };
+   content: Element[];
 }
 
 /**
- * @see https://github.com/svg/svgo/blob/master/plugins/inlineStyles.js
+ * @see https://github.com/svg/svgo/blob/master/docs/how-it-works/en.md#2-svg2js
  */
-interface InlineStylesConfig {
-   /** Whether to inline only selectors that match once.  */
-   onlyMatchedOnce: boolean;
-   /** Move matched selectors and leave non-matches. */
-   removeMatchedSelectors: boolean;
-   /** Media queries to use. The default is `''` and `screen`. */
-   useMediaQueries: string[];
-   usePseudos: string[];
+interface Content {
+   content: (Instruction | Comment | DocType | Element)[];
 }
-
-type Attribute = string | { [key: string]: string | boolean };
 
 /**
- * @see https://github.com/svg/svgo/blob/master/plugins/addAttributesToSVGElement.js
+ * @see https://github.com/svg/svgo/blob/master/plugins/addClassesToSVGElement.js
  */
-export interface AddAttributes {
-   attribute?: Attribute;
-   attributes?: Attribute[];
+interface SvgoPlugin {
+   type: PluginType;
+   active: boolean;
+   description: string;
+   fn: (data: Content, params: any) => any;
 }
 
-export interface SvgoPluginConfig {
-   [key: string]: boolean | object | undefined;
-   /**
-    * Remove white space from attributes.
-    */
-   cleanAttributes?: boolean | CleanAttributesConfig;
-   /**
-    * Move and merge styles from <style> elements to element style attributes.
-    */
-   inlineStyles?: boolean | InlineStylesConfig;
-
-   addAttributesToSVGElement?: AddAttributes;
+/**
+ * SVGO interface that isn't exported.
+ */
+export interface OptimizedSvg {
+   data: string;
+   info: object;
 }
+
+export const svgToSymbol: SvgoPlugin = {
+   type: PluginType.Full,
+   active: true,
+   description:
+      'Replace svg tags with symbol tags so individual SVG definitions can be combined in a sprite',
+   fn: (data, params) => {
+      return '';
+   }
+};
