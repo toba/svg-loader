@@ -2,7 +2,7 @@ import SVGO from 'svgo';
 import fs from 'fs';
 import path from 'path';
 import { Encoding, slug } from '@toba/tools';
-import { OptimizedSvg } from './svgo';
+import { OptimizedSvg, svgToSymbol } from './svgo-plugin';
 import { Compiler } from 'webpack';
 import {
    default as HtmlWebpackPlugin,
@@ -71,7 +71,8 @@ export class HtmlSvgPlugin {
          removeXMLNS: true,
          sortAttrs: true,
          removeViewBox: false,
-         removeDimensions: true
+         removeDimensions: true,
+         svgToSymbol
       };
       const svgo = new SVGO({
          plugins: Object.keys(plugins).map(
@@ -100,21 +101,26 @@ export class HtmlSvgPlugin {
 
          HtmlWebpackPlugin.getHooks(compilation).alterAssetTagGroups.tapAsync(
             name,
-            async (data, cb) => {
+            async (data: any, cb: (err: Error | null, data: any) => void) => {
                /** All assets in the Webpack compilation */
                const assets = compilation.assets;
                /** SVGO optimization calls */
                const optimizers: Promise<OptimizedSvg>[] = [];
                /** SVG content mapped to filename slug */
                const files = new Map<string, string>();
+               /** Asset names to remove from compilation */
+               const toRemove: string[] = [];
 
                if (pluginOptions.includeImports) {
                   // added loader makes imported SVGs assets in the compilation
                   Object.keys(assets)
                      .filter(name => name.endsWith('.svg'))
-                     .forEach(name =>
-                        files.set(slugify(name), assets[name]._value)
-                     );
+                     .forEach(name => {
+                        files.set(slugify(name), assets[name]._value);
+                        toRemove.push(name);
+                     });
+                  // remove inlined SVGs from the bundle
+                  toRemove.forEach(a => delete assets[a]);
                }
 
                this.options.files
@@ -137,11 +143,6 @@ export class HtmlSvgPlugin {
 
                /** SVGO optimized SVG */
                const symbols = await Promise.all(optimizers);
-
-               // TODO: remove SVG assets from bundle
-
-               // TODO: rename inner SVGs to symbol
-
                const tag: HtmlTagObject = {
                   tagName: 'svg',
                   attributes: {
@@ -149,7 +150,7 @@ export class HtmlSvgPlugin {
                      xmlns: 'http://www.w3.org/2000/svg',
                      'xmlns:xlink': 'http://www.w3.org/1999/xlink'
                   },
-                  innerHTML: symbols.map(s => s.data).join(),
+                  innerHTML: '\n' + symbols.map(s => s.data).join('\n') + '\n',
                   voidTag: false
                };
 

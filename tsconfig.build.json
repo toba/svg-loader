@@ -1,4 +1,7 @@
 // Configuration used for local TypeScript build.
 {
-   "extends": "@toba/develop/tsconfig.lib"
+   "extends": "@toba/develop/tsconfig.lib",
+   "compilerOptions": {
+      "typeRoots": ["./types", "node_module/@types"]
+   }
 }
