@@ -48,7 +48,7 @@ export const slugify = (filePath: string): string => {
 export class HtmlSvgPlugin {
    options: SvgPluginOptions;
 
-   constructor(options: Partial<SvgPluginOptions>) {
+   constructor(options?: Partial<SvgPluginOptions>) {
       this.options =
          options === undefined
             ? defaultOptions

@@ -16,7 +16,7 @@ const svgLoader: webpack.loader.Loader = function(
    const fileName = this.request.substr(this.request.lastIndexOf('/') + 1);
    this.emitFile(fileName, text, sourceMap);
 
-   return `module.exports = "${slugify(fileName)}";`;
+   return `module.exports = "#${slugify(fileName)}";`;
 };
 
 module.exports = svgLoader;
