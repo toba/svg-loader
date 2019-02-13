@@ -1,6 +1,5 @@
-// Build as CommonJS for direct use by Webpack.
 {
-   "extends": "@toba/develop/tsconfig.dev",
+   "extends": "@toba/develop/tsconfig.lib",
    "compilerOptions": {
       "typeRoots": ["./types", "node_module/@types"]
    }
