@@ -1,7 +1,7 @@
 import SVGO from 'svgo';
 import fs from 'fs';
 import path from 'path';
-import { Encoding, slug } from '@toba/tools/cjs';
+import { Encoding, slug, isDependency } from '@toba/node-tools';
 import { OptimizedSvg, svgToSymbol } from './svgo-plugin';
 import { Configuration, Compiler } from 'webpack';
 import {
@@ -13,7 +13,7 @@ import {
  * Loader extension will either be `js` or `ts` depending on whether its the
  * test or distributed version.
  */
-const ext = __dirname.includes('node_modules') ? 'js' : 'ts';
+const ext = isDependency(__dirname) ? 'js' : 'ts';
 const name = 'html-webpack-inline-svg';
 const svgLoaderPath = path.resolve(__dirname, '.', `loader.${ext}`);
 
