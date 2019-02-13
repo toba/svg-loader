@@ -1,6 +1,6 @@
 {
    "name": "@toba/html-webpack-inline-svg",
-   "version": "1.0.5",
+   "version": "1.0.6",
    "description": "Toba svg-loader module",
    "private": false,
    "author": {
@@ -11,17 +11,17 @@
    "publishConfig": {
       "access": "public"
    },
-   "main": "dist/index.js",
-   "types:": "dist/index.d.ts",
+   "main": "cjs/index.js",
+   "types:": "cjs/index.d.ts",
    "files": [
-      "dist/**/*"
+      "cjs/**/*"
    ],
    "scripts": {
       "prepublishOnly": "./node_modules/.bin/tsc --project tsconfig.build.json",
       "test": "jest --coverage"
    },
    "devDependencies": {
-      "@toba/develop": "^5.0.0",
+      "@toba/develop": "^6.0.0",
       "@toba/test": "^3.0.0",
       "@types/memory-fs": "^0.3.2",
       "@types/svgo": "^1.0.1",

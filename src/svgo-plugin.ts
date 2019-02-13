@@ -1,5 +1,3 @@
-import svgo from 'svgo';
-
 /**
  * @see https://github.com/svg/svgo/blob/master/docs/how-it-works/en.md#31-types
  */

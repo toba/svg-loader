@@ -1,5 +1,5 @@
 {
-   "extends": "@toba/develop/tsconfig.lib",
+   "extends": "@toba/develop/tsconfig.dev",
    "compilerOptions": {
       "typeRoots": ["./types", "node_module/@types"]
    }
