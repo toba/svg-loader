@@ -678,10 +678,10 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
-"@toba/develop@^5.0.0":
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/@toba/develop/-/develop-5.1.0.tgz#00374c35a2c0faecdbfede1e9d09ecc59545d0f5"
-  integrity sha512-BwukNz0Zm+p0iB2vX67c89l3OsvQ3kamZYUIlHT5VfKQtjKcLiFN0URyZiFyqcHqNi7j4B4O9mxOidNsWFdbQA==
+"@toba/develop@^6.0.0":
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/@toba/develop/-/develop-6.0.3.tgz#371bebfc4fb09b65289e93d7e56dbede58bca970"
+  integrity sha512-AuawLK6WdKBOhHx0xpqoQQV+fCld5WWpbvdLm7Jo6FcF62GiQ/ZORmyOw5d5hnUQsEWol/DKZAjqe+wcXOZq9Q==
   dependencies:
     "@typescript-eslint/eslint-plugin" "^1.2.0"
     eslint "^5.13.0"
@@ -693,9 +693,9 @@
     typescript "^3.3.1"
 
 "@toba/test@^3.0.0":
-  version "3.7.3"
-  resolved "https://registry.yarnpkg.com/@toba/test/-/test-3.7.3.tgz#600c5e9d724b6264749e0a14f1a7efdcb029a96f"
-  integrity sha512-rupNU8Ewsi6RRhwr948HtKqs8+XOHUYRMnH8dRWlOulH9uXv0oV2U2bV/JCvIBdIHxBYMEElRS0oIjOl6wMnRA==
+  version "3.7.4"
+  resolved "https://registry.yarnpkg.com/@toba/test/-/test-3.7.4.tgz#b55aea560756d60dfecf7a4b39aa50e9d1aff940"
+  integrity sha512-IxsA0FDCMl2yotTzRi+gL9N4FTtzBM4uZNU6Lh7NhEcDzSNWpEl9vz5p1L7i3SF81BAGoJH+O01OhQTuTx4TOw==
   dependencies:
     "@babel/core" "^7.2.2"
     "@babel/plugin-proposal-class-properties" "^7.3.0"
@@ -711,9 +711,9 @@
     jest-date-mock "^1.0.6"
 
 "@toba/tools@^6.0.0", "@toba/tools@^6.1.1":
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/@toba/tools/-/tools-6.2.0.tgz#d77998ce4eec673687e31ed3a6f11df2c79ac66b"
-  integrity sha512-15WVSZoLS7z/YOcoophvTwsMyZQ3gDPENQNzwGFd5f9CPpTUnFwv3FYG6L8+jyWL9ChXSpnP+qZ6k8j0xU/E0A==
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/@toba/tools/-/tools-6.3.0.tgz#b53385cbb6129986904ac5faf084205389e5c9e2"
+  integrity sha512-uM2qd0KU0vr+pL8e9vs7qW57Kn5iXoCMnNUpVDDk2p384TWReSZcthp6XO2biMAABnn2GXVmcZ6/L6DgHB/2Pw==
 
 "@types/anymatch@*":
   version "1.3.0"
