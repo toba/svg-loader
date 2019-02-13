@@ -1,7 +1,7 @@
 import SVGO from 'svgo';
 import fs from 'fs';
 import path from 'path';
-import { Encoding, slug } from '@toba/tools';
+import { Encoding, slug } from '@toba/tools/cjs';
 import { OptimizedSvg, svgToSymbol } from './svgo-plugin';
 import { Compiler } from 'webpack';
 import {
