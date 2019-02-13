@@ -1,6 +1,6 @@
 {
    "name": "@toba/html-webpack-inline-svg",
-   "version": "1.0.7",
+   "version": "1.0.8",
    "description": "Toba svg-loader module",
    "private": false,
    "author": {
@@ -22,6 +22,7 @@
    },
    "devDependencies": {
       "@toba/develop": "^6.0.0",
+      "@toba/example": "^2.0.8",
       "@toba/test": "^3.0.0",
       "@types/memory-fs": "^0.3.2",
       "@types/svgo": "^1.0.1",

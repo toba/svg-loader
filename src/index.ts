@@ -1,9 +1,9 @@
 import SVGO from 'svgo';
 import fs from 'fs';
 import path from 'path';
-import { Encoding, slug } from '@toba/tools/cjs';
+import { Encoding, slug, is } from '@toba/tools/cjs';
 import { OptimizedSvg, svgToSymbol } from './svgo-plugin';
-import { Compiler } from 'webpack';
+import { Configuration, Compiler } from 'webpack';
 import {
    default as HtmlWebpackPlugin,
    HtmlTagObject
@@ -84,25 +84,30 @@ export class HtmlSvgPlugin {
             key => ({ [key]: plugins[key] } as any)
          )
       });
-      const pluginOptions = this.options;
+
+      if (this.options.includeImports) {
+         // add loader for imported SVG files
+         compiler.hooks.beforeRun.tap(name, compiler => {
+            const config: Configuration = compiler.options;
+
+            if (config.module === undefined) {
+               config.module = { rules: [] };
+            } else if (config.module.rules === undefined) {
+               config.module.rules = [];
+            }
+            config.module.rules.push({
+               test: /\.svg$/,
+               //exclude: /node_modules(?!\/@toba)/,
+               use: svgLoaderPath
+            });
+         });
+      }
 
       // tap into main Webpack compilation completion
       compiler.hooks.compilation.tap(name, compilation => {
-         const options = compilation.compiler.options;
+         const config: Configuration = compilation.compiler.options;
          const basePath: string =
-            options.context !== undefined ? options.context : __dirname;
-
-         if (pluginOptions.includeImports) {
-            // add loader for imported SVG files
-            compilation.hooks.normalModuleLoader.tap(
-               name,
-               (_context, mod: any) => {
-                  if (mod.request.endsWith('.svg')) {
-                     mod.loaders.unshift({ loader: svgLoaderPath });
-                  }
-               }
-            );
-         }
+            config.context !== undefined ? config.context : __dirname;
 
          HtmlWebpackPlugin.getHooks(compilation).alterAssetTagGroups.tapAsync(
             name,
@@ -116,7 +121,7 @@ export class HtmlSvgPlugin {
                /** Asset names to remove from compilation */
                const toRemove: string[] = [];
 
-               if (pluginOptions.includeImports) {
+               if (this.options.includeImports) {
                   // added loader makes imported SVGs assets in the compilation
                   Object.keys(assets)
                      .filter(name => name.endsWith('.svg'))

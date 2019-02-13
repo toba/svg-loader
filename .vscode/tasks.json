@@ -70,24 +70,6 @@
          },
          "type": "shell",
          "problemMatcher": []
-      },
-      {
-         "label": "Example: iOS",
-         "command": "${workspaceFolder}/node_modules/.bin/expo",
-         "args": ["start", "--ios"],
-         "options": {
-            "cwd": "${workspaceFolder}/node_modules/@toba/example/"
-         },
-         "problemMatcher": []
-      },
-      {
-         "label": "Example: Android",
-         "command": "${workspaceFolder}/node_modules/.bin/expo",
-         "args": ["start", "--android"],
-         "options": {
-            "cwd": "${workspaceFolder}/node_modules/@toba/example/"
-         },
-         "problemMatcher": []
       }
    ]
 }
