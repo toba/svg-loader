@@ -1045,9 +1045,9 @@
   integrity sha512-ONhaKPIufzzrlNbqtWFFd+jlnemX6lJAgq9ZeiZtS7I1PIf/la7CW4m83rTXRnVnsMbW2k56pGYu7AUFJD9Pow==
 
 "@toba/build@^4.14.0":
-  version "4.14.8"
-  resolved "https://registry.yarnpkg.com/@toba/build/-/build-4.14.8.tgz#9eac25e6a2678f8e90ba6fbfbdc23d03b4fe760f"
-  integrity sha512-BwoDta7KilBDudSRMRxrugAEK6kzcjjzzJuUq/OVKarROri/Sxxdeu6MMdvammq6QwhxAo/W49axV4eEqoyjTw==
+  version "4.14.9"
+  resolved "https://registry.yarnpkg.com/@toba/build/-/build-4.14.9.tgz#31748f5a99b05ccc238732ff83c56e09d80f0b41"
+  integrity sha512-X2OMWdftTjzHUAWkWVWPM44i49HzRONC68CAq0vWFZn1+t4j3yqjsjWDaTM1rZtBmEDewKFeSNGe/u61qNvJbQ==
   dependencies:
     "@babel/core" "^7.2.2"
     "@babel/polyfill" "^7.2.5"
@@ -1055,7 +1055,7 @@
     "@babel/preset-react" "^7.0.0"
     "@toba/develop" "^6.0.0"
     "@toba/html-webpack-inline-svg" "^1.0.0"
-    "@toba/tools" "^6.0.0"
+    "@toba/node-tools" "^1.0.0"
     babel-core "^7.0.0-bridge.0"
     babel-jest "^24.0.0"
     babel-loader "^8.0.0"
@@ -1092,11 +1092,12 @@
     typescript "^3.3.1"
 
 "@toba/example@^2.0.8":
-  version "2.0.10"
-  resolved "https://registry.yarnpkg.com/@toba/example/-/example-2.0.10.tgz#b1564a2efe0a643c5680ba2ffd21f04315b748e8"
-  integrity sha512-dNnNR0MNf3q60RHSgOq79X6qEkbj4zl/fSF/+b47Yy//0QmKc9/76ELumse64NUTLjihv4yQf0+IVQBfkWRhOg==
+  version "2.0.11"
+  resolved "https://registry.yarnpkg.com/@toba/example/-/example-2.0.11.tgz#fe406fcb2669cf093b370e5974b769ceb060d7b7"
+  integrity sha512-FHBuK0HNdY7s6/9INLCVMJAz1lBzO28CHVZjxkgrMGtjoc+HPFzc+zU63gZdDkg4YUMgHWVy75N/GOoUJe9MzA==
   dependencies:
     "@toba/build" "^4.14.0"
+    "@toba/node-tools" "^1.1.1"
     "@types/react" "^16.7.18"
     "@types/react-dom" "^16.0.11"
     "@types/react-native" "^0.57.29"
@@ -1108,18 +1109,18 @@
     react-native "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz"
 
 "@toba/html-webpack-inline-svg@^1.0.0":
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/@toba/html-webpack-inline-svg/-/html-webpack-inline-svg-1.0.9.tgz#725306dea064dc22fd6a5d98570c9ca4365b601d"
-  integrity sha512-UBIyv12RgxmGumavFRV5bYNhrBJUoHHfeOkUoz8KCUPujpYGGMZ+hwCokj6exZvfIWOIelrX6oW/BeZfI5ObKw==
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/@toba/html-webpack-inline-svg/-/html-webpack-inline-svg-1.0.10.tgz#77d098d409bbe13d48941be2b8d74cf74d5b1e05"
+  integrity sha512-Ri8iwC60Pa1/r9A+stP6GbRN0CdEiQemKAoX5B4yYyWV9d83MPxL+kRbcp1knOqPQqXB+2L8VdRRzLdJl9n7IA==
   dependencies:
-    "@toba/tools" "^6.1.1"
+    "@toba/node-tools" "^1.1.0"
     html-webpack-plugin "^4.0.0-beta"
     svgo "^1.1.1"
 
-"@toba/node-tools@^1.1.0":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@toba/node-tools/-/node-tools-1.1.1.tgz#0e75bf01790e1ae9c31efd5822dea109f6cc7a6f"
-  integrity sha512-95XbJnJ5dXFpPiZXQC83PXhkMu0X31XrnZqWqBIqmbbL1rXa8cTjJsnPEdO0n72xrW0Lk8hrbEv1+ciy3DTpsg==
+"@toba/node-tools@^1.0.0", "@toba/node-tools@^1.1.0", "@toba/node-tools@^1.1.1":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@toba/node-tools/-/node-tools-1.1.2.tgz#28c6ece567fb3a63f8df23a8b86e86921f16a952"
+  integrity sha512-ZNSehdkVEd2CgytTmb2wLS8BIeOLNdkEF6JhUyTe9Kfyi94fos+XlD08Ln2xkwpFe+YQHxGgPWYqZjf/kvLdvQ==
   dependencies:
     "@toba/tools" "^6.0.0"
     "@types/node" "^11.0.0"
@@ -1142,7 +1143,7 @@
     jest "^24.0.0"
     jest-date-mock "^1.0.6"
 
-"@toba/tools@^6.0.0", "@toba/tools@^6.1.1":
+"@toba/tools@^6.0.0":
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/@toba/tools/-/tools-6.3.0.tgz#b53385cbb6129986904ac5faf084205389e5c9e2"
   integrity sha512-uM2qd0KU0vr+pL8e9vs7qW57Kn5iXoCMnNUpVDDk2p384TWReSZcthp6XO2biMAABnn2GXVmcZ6/L6DgHB/2Pw==
@@ -1189,9 +1190,9 @@
   integrity sha512-Q5hTcfdudEL2yOmluA1zaSyPbzWPmJ3XfSWeP3RyoYvS9hnje1ZyagrZOuQ6+1nQC1Gw+7gap3pLNL3xL6UBug==
 
 "@types/lodash.zipobject@^4.1.4":
-  version "4.1.4"
-  resolved "https://registry.yarnpkg.com/@types/lodash.zipobject/-/lodash.zipobject-4.1.4.tgz#ab8db347e4ae0991e92ca7e207314d9283fc9f93"
-  integrity sha512-6SMFP7bzhLj29vFnlD55r/i7oZFIcttxyWIIIqNp6ZGUJu6PUD0XyAJzEvRLOHQyHd1eteLxU2PDYDZKgjlRGA==
+  version "4.1.5"
+  resolved "https://registry.yarnpkg.com/@types/lodash.zipobject/-/lodash.zipobject-4.1.5.tgz#b386e77bde8f47009df5f4d7978b9cb86c202172"
+  integrity sha512-JZDcYsVI3313S7dqrB56ijCvx0nK9xDMochGYLduxCfYQYfcFXqh1Ya2P530rvssEvSRHu0hVNtkSFlkIKfUBg==
   dependencies:
     "@types/lodash" "*"
 
