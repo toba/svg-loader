@@ -1,7 +1,7 @@
 import SVGO from 'svgo';
 import fs from 'fs';
 import path from 'path';
-import { Encoding, slug, is } from '@toba/tools/cjs';
+import { Encoding, slug } from '@toba/tools/cjs';
 import { OptimizedSvg, svgToSymbol } from './svgo-plugin';
 import { Configuration, Compiler } from 'webpack';
 import {
@@ -28,12 +28,24 @@ interface SvgPluginOptions {
     * `true`.
     */
    includeImports: boolean;
+   /**
+    * Whether to automatically add a Webpack SVG loader. The default is `true`
+    * when `includeImports` is `true`, otherwise it's `false`.
+    *
+    * The current means of automatically adding the loader (tapping into
+    * Webpack's run) works well except with Webpack DevServer's automatic
+    * recompile. If using the DevServer, it's more reliable to explicitly add
+    * the SVG loader to Webpack's module rules.
+    */
+   addSvgLoader: boolean;
+
    svgo?: SVGO.Options;
 }
 
 const defaultOptions: SvgPluginOptions = {
    files: [],
-   includeImports: true
+   includeImports: true,
+   addSvgLoader: true
 };
 
 /**
@@ -85,7 +97,7 @@ export class HtmlSvgPlugin {
          )
       });
 
-      if (this.options.includeImports) {
+      if (this.options.includeImports && this.options.addSvgLoader) {
          // add loader for imported SVG files
          compiler.hooks.beforeRun.tap(name, compiler => {
             const config: Configuration = compiler.options;
