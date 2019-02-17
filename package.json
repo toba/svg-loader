@@ -22,15 +22,12 @@
    },
    "devDependencies": {
       "@toba/develop": "^6.0.0",
-      "@toba/example": "^2.0.8",
+      "@toba/example": "^3.0.0",
       "@toba/test": "^3.0.0",
       "@types/memory-fs": "^0.3.2",
       "@types/svgo": "^1.0.1",
       "@types/webpack": "^4.4.24",
       "webpack": "^4.29.0"
-   },
-   "resolutions": {
-      "ajv": "6.8.1"
    },
    "repository": {
       "type": "git",
