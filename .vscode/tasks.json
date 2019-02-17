@@ -74,7 +74,7 @@
       {
          "label": "Example: iOS",
          "command": "${workspaceFolder}/node_modules/.bin/expo",
-         "args": ["start"], //, "--ios"],
+         "args": ["start", "--ios"],
          "options": {
             "cwd": "${workspaceFolder}/node_modules/@toba/example/"
          },
