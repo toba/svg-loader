@@ -102,7 +102,9 @@
          "command": "node",
          "args": [
             "${workspaceFolder}/node_modules/react-native/local-cli/cli.js",
-            "start"
+            "start",
+            "--config=${workspaceFolder}/node_modules/@toba/example/rn-cli.config.js",
+            "--resetCache"
          ],
          "options": {
             "cwd": "${workspaceFolder}/node_modules/@toba/example"
