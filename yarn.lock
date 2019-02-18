@@ -893,9 +893,9 @@
     typescript "^3.3.1"
 
 "@toba/example@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@toba/example/-/example-3.0.0.tgz#e2c2b47e535b2d8bb41535e5be129a1a754c19ff"
-  integrity sha512-M8XzUO12FxJguCrGhl6FHEw0ohotJKVvn+tBkd9FVu2LJWuMtmHs5cZ4ayXMIaEuygrZvy+uwubbvh/6QCCO6w==
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@toba/example/-/example-3.0.1.tgz#d528dd94b21d58eb2c5c51e107052499c15c1138"
+  integrity sha512-fMb8tLu4ZlWhEV2B2r6+bILTGe8mrSwEunPVnM8vEU3pJNAFG3LuNIuOEVTH5Q6DVV1fQdOHqcXzYNJAcUSM9w==
   dependencies:
     "@toba/build" "^4.14.0"
     "@toba/node-tools" "^1.1.1"
@@ -1906,7 +1906,7 @@ babel-jest@^24.0.0, babel-jest@^24.1.0:
     chalk "^2.4.2"
     slash "^2.0.0"
 
-babel-loader@^8.0.0:
+babel-loader@^8.0.0, babel-loader@^8.0.5:
   version "8.0.5"
   resolved "https://registry.yarnpkg.com/babel-loader/-/babel-loader-8.0.5.tgz#225322d7509c2157655840bba52e46b6c2f2fe33"
   integrity sha512-NTnHnVRd2JnRqPC0vW+iOQWU5pchDbYXsG2E6DMXEpMfUcQKclF9gmf3G3ZMhzG7IG9ji4coL0cm+FxeWxDpnw==
@@ -11142,7 +11142,7 @@ webidl-conversions@^4.0.2:
   resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-4.0.2.tgz#a855980b1f0b6b359ba1d5d9fb39ae941faa63ad"
   integrity sha512-YQ+BmxuTgd6UXZW3+ICGfyqRyHXVlD5GtQr5+qjiNW7bF0cqrzX500HVXPBOvgXb5YnzDd+h0zqyv61KUD7+Sg==
 
-webpack-cli@3.2.3:
+webpack-cli@3.2.3, webpack-cli@^3.2.3:
   version "3.2.3"
   resolved "https://registry.yarnpkg.com/webpack-cli/-/webpack-cli-3.2.3.tgz#13653549adfd8ccd920ad7be1ef868bacc22e346"
   integrity sha512-Ik3SjV6uJtWIAN5jp5ZuBMWEAaP5E4V78XJ2nI+paFPh8v4HPSwo/myN0r29Xc/6ZKnd2IdrAlpSgNOu2CDQ6Q==

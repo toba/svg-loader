@@ -18,6 +18,7 @@
    ],
    "scripts": {
       "prepublishOnly": "./node_modules/.bin/tsc --project tsconfig.build.json",
+      "link": "ln -s ~/dev/src/toba/svg-loader/node_modules/react-native/ ~/dev/src/toba/svg-loader/node_modules/@toba/example/node_modules/",
       "test": "jest --coverage"
    },
    "devDependencies": {
@@ -27,7 +28,9 @@
       "@types/memory-fs": "^0.3.2",
       "@types/svgo": "^1.0.1",
       "@types/webpack": "^4.4.24",
-      "webpack": "^4.29.0"
+      "babel-loader": "^8.0.5",
+      "webpack": "^4.29.0",
+      "webpack-cli": "^3.2.3"
    },
    "repository": {
       "type": "git",

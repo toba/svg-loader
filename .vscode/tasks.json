@@ -73,19 +73,56 @@
       },
       {
          "label": "Example: iOS",
-         "command": "${workspaceFolder}/node_modules/.bin/expo",
-         "args": ["start", "--ios"],
+         "command": "${workspaceFolder}/node_modules/.bin/react-native",
+         "args": ["run-ios"],
          "options": {
-            "cwd": "${workspaceFolder}/node_modules/@toba/example/"
+            "cwd": "${workspaceFolder}/node_modules/@toba/example"
+         },
+         "presentation": {
+            "echo": false,
+            "clear": true
+         },
+         "problemMatcher": []
+      },
+      {
+         "label": "Example: Link",
+         "command": "ln",
+         "args": [
+            "-s",
+            "${workspaceFolder}/node_modules/react-native/",
+            "${workspaceFolder}/node_modules/@toba/example/node_modules/"
+         ],
+         "presentation": {
+            "clear": true
+         },
+         "problemMatcher": []
+      },
+      {
+         "label": "Example: CLI",
+         "command": "node",
+         "args": [
+            "${workspaceFolder}/node_modules/react-native/local-cli/cli.js",
+            "start"
+         ],
+         "options": {
+            "cwd": "${workspaceFolder}/node_modules/@toba/example"
+         },
+         "presentation": {
+            "echo": false,
+            "clear": true
          },
          "problemMatcher": []
       },
       {
          "label": "Example: Android",
-         "command": "${workspaceFolder}/node_modules/.bin/expo",
-         "args": ["start", "--android"],
+         "command": "${workspaceFolder}/node_modules/.bin/react-native",
+         "args": ["run-android"],
          "options": {
-            "cwd": "${workspaceFolder}/node_modules/@toba/example/"
+            "cwd": "${workspaceFolder}/node_modules/@toba/example/src"
+         },
+         "presentation": {
+            "echo": false,
+            "clear": true
          },
          "problemMatcher": []
       }
