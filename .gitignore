@@ -1,5 +1,9 @@
 node_modules/
 coverage/
 cjs/
+
 examples/dist
+examples/mobile/node_modules
+examples/mobile/ios/build
+
 yarn-error.log

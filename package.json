@@ -16,6 +16,17 @@
    "files": [
       "cjs/**/*"
    ],
+   "workspaces": {
+      "examples": [
+         "examples/*"
+      ],
+      "nohoist": [
+         "**/react-native",
+         "**/react-native/**",
+         "**/*mobile/**/react",
+         "**/*mobile/**/react/**"
+      ]
+   },
    "scripts": {
       "prepublishOnly": "./node_modules/.bin/tsc --project tsconfig.build.json",
       "link": "ln -s ~/dev/src/toba/svg-loader/node_modules/react-native/ ~/dev/src/toba/svg-loader/node_modules/@toba/example/node_modules/",

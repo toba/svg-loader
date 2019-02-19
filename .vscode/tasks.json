@@ -76,7 +76,7 @@
          "command": "./node_modules/.bin/react-native",
          "args": ["run-ios"],
          "options": {
-            "cwd": "${workspaceFolder}/node_modules/@toba/example/src/mobile"
+            "cwd": "${workspaceFolder}/examples/mobile"
          },
          "presentation": {
             "echo": false,
@@ -89,7 +89,7 @@
          "command": "yarn",
          "args": ["install"],
          "options": {
-            "cwd": "${workspaceFolder}/node_modules/@toba/example/src/mobile"
+            "cwd": "${workspaceFolder}/examples/mobile"
          },
          "presentation": {
             "clear": true
@@ -98,14 +98,10 @@
       },
       {
          "label": "Example: Bundle Mobile",
-         "command": "node",
-         "args": [
-            "./node_modules/react-native/local-cli/cli.js",
-            "start",
-            "--resetCache"
-         ],
+         "command": "react-native",
+         "args": ["start", "--resetCache"],
          "options": {
-            "cwd": "${workspaceFolder}/node_modules/@toba/example/src/mobile"
+            "cwd": "${workspaceFolder}/examples/mobile"
          },
          "presentation": {
             "echo": false,
@@ -118,7 +114,7 @@
          "command": "./node_modules/.bin/react-native",
          "args": ["run-android"],
          "options": {
-            "cwd": "${workspaceFolder}/node_modules/@toba/example/src/mobile"
+            "cwd": "${workspaceFolder}/examples/mobile"
          },
          "presentation": {
             "echo": false,
