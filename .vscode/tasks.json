@@ -99,7 +99,7 @@
       {
          "label": "Example: Bundle Mobile",
          "command": "react-native",
-         "args": ["start", "--resetCache"],
+         "args": ["start"], //"--resetCache"],
          "options": {
             "cwd": "${workspaceFolder}/examples/mobile"
          },
