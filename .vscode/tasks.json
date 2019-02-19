@@ -3,7 +3,8 @@
    "tasks": [
       {
          "label": "Test",
-         "command": "./node_modules/.bin/jest",
+         "command": "${workspaceFolder}/node_modules/.bin/jest",
+         "options": { "cwd": "./packages/lib" },
          "presentation": {
             "showReuseMessage": false,
             "clear": true

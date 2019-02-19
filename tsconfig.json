@@ -1,6 +1,6 @@
 {
-   "extends": "@toba/develop/tsconfig.cjs",
+   "extends": "@toba/develop/tsconfig.pkg",
    "compilerOptions": {
-      "typeRoots": ["./types", "node_module/@types"]
+      "typeRoots": ["./packages/types", "node_module/@types"]
    }
 }

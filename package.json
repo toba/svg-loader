@@ -1,24 +1,9 @@
 {
-   "name": "@toba/html-webpack-inline-svg",
-   "version": "1.0.10",
-   "description": "Toba svg-loader module",
-   "private": false,
-   "author": {
-      "name": "Jason Abbott",
-      "url": "http://github.com/toba"
-   },
+   "private": true,
    "license": "MIT",
-   "publishConfig": {
-      "access": "public"
-   },
-   "main": "cjs/index.js",
-   "types:": "cjs/index.d.ts",
-   "files": [
-      "cjs/**/*"
-   ],
    "workspaces": {
-      "examples": [
-         "examples/*"
+      "packages": [
+         "packages/*"
       ],
       "nohoist": [
          "**/react-native",
@@ -27,29 +12,8 @@
          "**/*mobile/**/react/**"
       ]
    },
-   "scripts": {
-      "prepublishOnly": "./node_modules/.bin/tsc --project tsconfig.build.json",
-      "link": "ln -s ~/dev/src/toba/svg-loader/node_modules/react-native/ ~/dev/src/toba/svg-loader/node_modules/@toba/example/node_modules/",
-      "test": "jest --coverage"
-   },
    "devDependencies": {
       "@toba/develop": "^6.0.0",
-      "@toba/example": "^3.0.0",
-      "@toba/test": "^3.0.0",
-      "@types/memory-fs": "^0.3.2",
-      "@types/svgo": "^1.0.1",
-      "@types/webpack": "^4.4.24",
-      "babel-loader": "^8.0.5",
-      "webpack": "^4.29.0",
-      "webpack-cli": "^3.2.3"
-   },
-   "repository": {
-      "type": "git",
-      "url": "https://github.com/toba/svg-loader"
-   },
-   "dependencies": {
-      "@toba/node-tools": "^1.1.0",
-      "html-webpack-plugin": "^4.0.0-beta",
-      "svgo": "^1.1.1"
+      "@toba/test": "^3.0.0"
    }
 }
