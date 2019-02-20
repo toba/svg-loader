@@ -14,6 +14,11 @@ declare module '@svgr/core' {
       template: TemplateBuilder;
    }
 
+   /**
+    * @see https://github.com/smooth-code/svgr/blob/master/packages/plugin-svgo/src/index.js
+    */
+   export type Plugin = (src: string, config: Config, state: State) => string;
+
    export type Template = (context: Context, p2: any, ast: AST) => string;
 
    /**
@@ -48,7 +53,10 @@ declare module '@svgr/core' {
        * @see https://www.smooth-code.com/open-source/svgr/docs/options/#native
        */
       native?: boolean;
-      plugins?: string[];
+      /**
+       * @see https://www.smooth-code.com/open-source/svgr/docs/node-api/#plugins
+       */
+      plugins?: (string | Plugin)[];
       h2xConfig?: null;
       /**
        * Use Prettier to format JavaScript code output. Default is `true`.

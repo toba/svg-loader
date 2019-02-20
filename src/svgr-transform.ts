@@ -1,6 +1,20 @@
+import SVGO from 'svgo';
 import svgr from '@svgr/core';
 import { TransformOptions, BabelFileResult } from '@babel/core';
 import metroBabel from 'metro-react-native-babel-transformer';
+
+export const svgoPlugin: svgr.Plugin = (src, config, state) => {
+   if (!config.svgo) {
+      return src;
+   }
+   function getInfo(state) {
+      return state.filePath
+         ? { input: 'file', path: state.filePath }
+         : { input: 'string' };
+   }
+   const svgo = new SVGO();
+   return svgo.optimize(src);
+};
 
 /**
  *
@@ -25,22 +39,7 @@ export const svgToJSX = (svg: string) =>
       icon: false,
       native: true,
       svgo: true,
-      svgoConfig: {
-         full: true,
-         // https://github.com/svg/svgo#what-it-can-do
-         plugins: [
-            { removeXMLNS: true },
-            { removeUnusedNS: true },
-            { removeViewBox: true },
-            {
-               removeAttrs: {
-                  attrs: 'xmlns:bx'
-               }
-            },
-            { prefixIds: false }
-         ]
-      },
-      //plugins: ['@svgr/plugin-svgo', '@svgr/plugin-jsx'],
+      plugins: [svgoPlugin],
       template,
       ext: '.ts'
    });

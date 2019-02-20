@@ -59,7 +59,8 @@ export const slugify = (filePath: string): string => {
 };
 
 /**
- *
+ * Webpack plugin to optimize each `.svg` asset with SVGO and add it to the
+ * HtmlWebpack generated index.html file.
  * @see https://github.com/DustinJackson/html-webpack-inline-source-plugin
  */
 export class HtmlSvgPlugin {

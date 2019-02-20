@@ -94,6 +94,7 @@ interface SyntaxTree extends BaseItem {
 }
 
 /**
+ * Method to add functionality to SVGO.
  * @see https://github.com/svg/svgo/blob/master/plugins/addClassesToSVGElement.js
  */
 interface SvgoPlugin<T extends Item | SyntaxTree, U> {
@@ -112,6 +113,10 @@ export interface OptimizedSvg {
    info: object;
 }
 
+/**
+ * SVGO plugin to rename `svg` tag to `symbol` so multiple images can be defined
+ * in a single `svg` to be `use`ed elsewhere.
+ */
 export const svgToSymbol: SvgoPlugin<Item, never> = {
    type: PluginType.PerItem,
    active: true,
