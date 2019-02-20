@@ -1,19 +1,31 @@
 import SVGO from 'svgo';
 import svgr from '@svgr/core';
+import { OptimizedSvg } from './svgo-plugin';
 import { TransformOptions, BabelFileResult } from '@babel/core';
 import metroBabel from 'metro-react-native-babel-transformer';
+
+// interface SVGO {
+//    _optimizeOnce: () => string;
+// }
 
 export const svgoPlugin: svgr.Plugin = (src, config, state) => {
    if (!config.svgo) {
       return src;
    }
-   function getInfo(state) {
-      return state.filePath
-         ? { input: 'file', path: state.filePath }
-         : { input: 'string' };
-   }
+   let out = '';
+
+   const cb = (svg: OptimizedSvg) => {
+      out = svg.data;
+   };
+
+   // function getInfo(state) {
+   //    return state.filePath
+   //       ? { input: 'file', path: state.filePath }
+   //       : { input: 'string' };
+   // }
    const svgo = new SVGO();
-   return svgo.optimize(src);
+   svgo._optimizeOnce(src, null, cb);
+   return out;
 };
 
 /**

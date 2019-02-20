@@ -113,11 +113,8 @@ declare module '@svgr/core' {
 
    interface State {
       componentName: string;
+      filePath?: string;
    }
 
-   export function sync(
-      svg: string | object,
-      config: Config,
-      state?: State
-   ): string;
+   export const sync: Plugin;
 }
