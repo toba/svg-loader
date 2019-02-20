@@ -36,6 +36,8 @@
       "@toba/develop": "^6.0.0",
       "@toba/example": "^3.0.0",
       "@toba/test": "^3.0.0",
+      "@types/babel__core": "^7.0.5",
+      "@types/babel__template": "^7.0.2",
       "@types/memory-fs": "^0.3.2",
       "@types/svgo": "^1.0.1",
       "@types/webpack": "^4.4.24",
@@ -48,8 +50,12 @@
       "url": "https://github.com/toba/svg-loader"
    },
    "dependencies": {
+      "@svgr/core": "^4.1.0",
+      "@svgr/plugin-jsx": "^4.1.0",
+      "@svgr/plugin-svgo": "^4.0.3",
       "@toba/node-tools": "^1.1.0",
       "html-webpack-plugin": "^4.0.0-beta",
+      "metro-react-native-babel-transformer": "^0.52.0",
       "svgo": "^1.1.1"
    }
 }
