@@ -1,5 +1,5 @@
 declare module '@svgr/core' {
-   import { default as TemplateBuilder } from '@babel/template';
+   import { default as templateBuilder } from '@babel/template';
    import SVGO from 'svgo';
 
    export interface AST {
@@ -11,7 +11,7 @@ declare module '@svgr/core' {
    }
 
    export interface Context {
-      template: TemplateBuilder;
+      template: typeof templateBuilder;
    }
 
    /**

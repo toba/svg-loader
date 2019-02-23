@@ -8,15 +8,15 @@ import metroBabel from 'metro-react-native-babel-transformer';
 //    _optimizeOnce: () => string;
 // }
 
+// declare module 'svgo' {
+//    _optimizeOnce: () => string;
+// }
+
 export const svgoPlugin: svgr.Plugin = (src, config, state) => {
    if (!config.svgo) {
       return src;
    }
    let out = '';
-
-   const cb = (svg: OptimizedSvg) => {
-      out = svg.data;
-   };
 
    // function getInfo(state) {
    //    return state.filePath
@@ -24,7 +24,9 @@ export const svgoPlugin: svgr.Plugin = (src, config, state) => {
    //       : { input: 'string' };
    // }
    const svgo = new SVGO();
-   svgo._optimizeOnce(src, null, cb);
+   svgo._optimizeOnce(src, null, (svg: OptimizedSvg) => {
+      out = svg.data;
+   });
    return out;
 };
 
