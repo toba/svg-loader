@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 //import Svg, { Circle, Rect } from 'react-native-svg';
-import Logo from '../../src/__mocks__/logo-colored.svg';
+import Logo from './air-freshener.svg';
 
 const instructions = Platform.select({
    ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -40,7 +40,7 @@ export class ExampleApp extends Component {
                To get started, edit app.tsx
             </Text>
             <Text style={styles.instructions}>{instructions}</Text>
-            <Logo />
+            <Logo width={120} height={120} />
          </View>
       );
    }
