@@ -2,7 +2,7 @@ import SVGO from 'svgo';
 import fs from 'fs';
 import path from 'path';
 import { Encoding, slug, isDependency } from '@toba/node-tools';
-import { OptimizedSvg, svgToSymbol } from './svgo-plugin';
+import { svgToSymbol } from './svgo-plugin';
 import { Configuration, Compiler } from 'webpack';
 import {
    default as HtmlWebpackPlugin,
@@ -59,6 +59,18 @@ export const slugify = (filePath: string): string => {
 };
 
 /**
+ *
+ * SVGO plugin configurations.
+ * @see https://github.com/svg/svgo#what-it-can-do
+ */
+export const makeSVGO = (plugins: {
+   [key: string]: string | boolean | object;
+}) =>
+   new SVGO({
+      plugins: Object.keys(plugins).map(key => ({ [key]: plugins[key] } as any))
+   });
+
+/**
  * Webpack plugin to optimize each `.svg` asset with SVGO and add it to the
  * HtmlWebpack generated index.html file.
  * @see https://github.com/DustinJackson/html-webpack-inline-source-plugin
@@ -80,22 +92,13 @@ export class HtmlSvgPlugin {
        * original filename.
        */
       const addID = { id: '' };
-      /**
-       * SVGO plugin configurations.
-       * @see https://github.com/svg/svgo#what-it-can-do
-       */
-      const plugins: { [key: string]: string | boolean | object } = {
+      const svgo = makeSVGO({
          addAttributesToSVGElement: { attributes: [addID] },
          removeXMLNS: true,
          sortAttrs: true,
          removeViewBox: false,
          removeDimensions: true,
          svgToSymbol
-      };
-      const svgo = new SVGO({
-         plugins: Object.keys(plugins).map(
-            key => ({ [key]: plugins[key] } as any)
-         )
       });
 
       if (this.options.includeImports && this.options.addSvgLoader) {
@@ -128,7 +131,7 @@ export class HtmlSvgPlugin {
                /** All assets in the Webpack compilation */
                const assets = compilation.assets;
                /** SVGO optimization calls */
-               const optimizers: Promise<OptimizedSvg>[] = [];
+               const optimizers: Promise<SVGO.OptimizedSvg>[] = [];
                /** SVG content mapped to filename slug */
                const files = new Map<string, string>();
                /** Asset names to remove from compilation */

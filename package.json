@@ -40,7 +40,6 @@
       "@types/babel__template": "^7.0.2",
       "@types/html-minifier": "^3.5.3",
       "@types/memory-fs": "^0.3.2",
-      "@types/svgo": "^1.0.1",
       "@types/webpack": "^4.4.24",
       "babel-loader": "^8.0.5",
       "webpack": "^4.29.0",

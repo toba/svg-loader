@@ -42,6 +42,55 @@ export = {
 }
 ```
 
+## Usage
+
+Import your `.svg` file inside a React component:
+
+```jsx
+import Logo from './logo.svg';
+```
+
+You can then use your image as a component:
+
+```jsx
+<Logo width={120} height={40} />
+```
+
+_If you use React Native version 0.56 or older, you need to rename your `.svg` files to `.svgx`._
+
+### Demo (iOS/Android/Web)
+
+-  [react-native-svg-example](https://github.com/kristerkari/react-native-svg-example)
+
+## Installation and configuration
+
+### Step 1: Install react-native-svg library
+
+Make sure that you have installed and linked `react-native-svg` library:
+
+-  https://github.com/react-native-community/react-native-svg#installation
+
+Add this to your `metro.config.js` (create the file if it does not exist already):
+
+```js
+const { getDefaultConfig } = require('metro-config');
+
+module.exports = (async () => {
+   const {
+      resolver: { sourceExts, assetExts }
+   } = await getDefaultConfig();
+   return {
+      transformer: {
+         babelTransformerPath: require.resolve('react-native-svg-transformer')
+      },
+      resolver: {
+         assetExts: assetExts.filter(ext => ext !== 'svg'),
+         sourceExts: [...sourceExts, 'svg']
+      }
+   };
+})();
+```
+
 ## License
 
 Copyright &copy; 2019 Jason Abbott
