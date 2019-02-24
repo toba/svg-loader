@@ -40,8 +40,10 @@
       "@types/babel__template": "^7.0.2",
       "@types/html-minifier": "^3.5.3",
       "@types/memory-fs": "^0.3.2",
+      "@types/react-native": "^0.57.38",
       "@types/webpack": "^4.4.24",
       "babel-loader": "^8.0.5",
+      "react-native": "^0.58.5",
       "webpack": "^4.29.0",
       "webpack-cli": "^3.2.3"
    },
@@ -55,7 +57,6 @@
       "@svgr/plugin-svgo": "^4.0.3",
       "@toba/node-tools": "^1.1.0",
       "html-webpack-plugin": "^4.0.0-beta",
-      "metro-react-native-babel-transformer": "^0.52.0",
       "svgo": "^1.1.1"
    }
 }

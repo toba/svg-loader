@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
+import Logo from './air-freshener.svg';
 
 const instructions = Platform.select({
    ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -32,8 +33,11 @@ export class ExampleApp extends Component {
       return (
          <View style={styles.container}>
             <Text style={styles.welcome}>Welcome to React Native!</Text>
-            <Text style={styles.instructions}>To get started, edit App.js</Text>
+            <Text style={styles.instructions}>
+               To get started, edit example-app.tsx
+            </Text>
             <Text style={styles.instructions}>{instructions}</Text>
+            <Logo width={120} height={120} />
          </View>
       );
    }

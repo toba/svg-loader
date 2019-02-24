@@ -24,16 +24,17 @@ test('uses SVGO to prepare SVG', () => {
 test('converts SVG to a JSX component', () => {
    const jsx = svgToJSX(svg);
 
-   ["React from 'react'", 'SVGSVGElement'].forEach(yep => {
+   ['React from "react"'].forEach(yep => {
       expect(jsx.includes(yep)).toBe(true);
    });
    expect(jsx).toMatchSnapshot();
 });
-// https://github.com/smooth-code/svgr/blob/e3009cb37037e828c3f5360b42ad351fa51222e9/packages/babel-plugin-transform-svg-component/src/index.test.js
-// test('creates module for SVG file', async () => {
-//    const out = transform(svg, 'logo-colored.svg');
 
-//    expect(out).toBeDefined();
-//    expect(out.code).toBeDefined();
-//    expect(out.code).toMatchSnapshot();
-// });
+// https://github.com/smooth-code/svgr/blob/e3009cb37037e828c3f5360b42ad351fa51222e9/packages/babel-plugin-transform-svg-component/src/index.test.js
+test.skip('creates module for SVG file', async () => {
+   const out = transform(svg, 'logo-colored.svg');
+
+   expect(out).toBeDefined();
+   expect(out.code).toBeDefined();
+   expect(out.code).toMatchSnapshot();
+});

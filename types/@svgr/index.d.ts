@@ -2,12 +2,45 @@ declare module '@svgr/core' {
    import { default as templateBuilder } from '@babel/template';
    import SVGO from 'svgo';
 
+   export enum TokenType {
+      Identifier = 'Identifier',
+      StringLiteral = 'StringLiteral',
+      ImportDefaultSpecifier = 'ImportDefaultSpecifier',
+      ImportDeclaration = 'ImportDeclaration',
+      ExportDefaultDeclaration = 'ExportDefaultDeclaration'
+   }
+
+   export interface Token {
+      type: TokenType;
+      value: string;
+   }
+
+   export interface Specifier {
+      local: Token;
+      type: TokenType;
+   }
+
+   export interface Import {
+      source: Token;
+      specifiers: Specifier[];
+   }
+
+   export interface Declaration extends Token {
+      loc: string;
+   }
+
+   export interface Export {
+      declaration: Declaration;
+      loc: string;
+      type: TokenType;
+   }
+
    export interface AST {
-      imports: string;
+      imports: Import[];
       componentName: string;
-      props: string;
+      props: TokenType;
       jsx: string;
-      exports: string;
+      exports: Export;
    }
 
    export interface Context {

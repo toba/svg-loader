@@ -1,25 +1,18 @@
-//const path = require('path');
+/* eslint-disable @typescript-eslint/no-var-requires */
+const path = require('path');
 
-// module.exports = {
-//    projectRoot: path.resolve(__dirname),
-//    //extraNodeModules: rootRelative('react', 'react-native'),
-//    watchFolders: [path.resolve(__dirname, '..', '..', 'src')]
-// };
+/**
+ * Create map of module names to their working directory `node_modules` folder.
+ * @param  {...string} moduleNames
+ * @see https://facebook.github.io/metro/docs/en/configuration#extranodemodules
+ */
+const rootRelative = (...moduleNames) =>
+   moduleNames.reduce((hash, name) => {
+      hash[name] = path.resolve(__dirname, '..', '..', 'node_modules', name);
+      return hash;
+   }, {});
 
-// const { getDefaultConfig } = require('metro-config');
-
-// module.exports = (async () => {
-//    const {
-//       resolver: { sourceExts, assetExts }
-//    } = await getDefaultConfig();
-//    return {
-//       transformer: {
-//          babelTransformerPath: require.resolve('react-native-svg-transformer')
-//       },
-//       resolver: {
-//          assetExts: assetExts.filter(ext => ext !== 'svg'),
-//          sourceExts: [...sourceExts, 'svg']
-//       },
-//       watchFolders: [path.resolve(__dirname, '..', '..', 'src')]
-//    };
-// })();
+module.exports = {
+   //extraNodeModules: rootRelative('react-native'),
+   watchFolders: [path.resolve(__dirname, '..', '..')]
+};

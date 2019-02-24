@@ -1,7 +1,8 @@
 import SVGO from 'svgo';
 import svgr from '@svgr/core';
 import { TransformOptions, BabelFileResult } from '@babel/core';
-import metroBabel from 'metro-react-native-babel-transformer';
+//import metroBabel from 'metro-react-native-babel-transformer';
+import metroTransform from 'metro/src/reactNativeTransformer';
 import { makeSVGO } from './index';
 
 /**
@@ -30,24 +31,6 @@ export const svgoPlugin: svgr.Plugin = src => {
 };
 
 /**
- * Custom template make a TypeScript React component from an SVG file.
- * @see https://www.smooth-code.com/open-source/svgr/docs/typescript/
- * @see https://github.com/smooth-code/svgr/blob/e3009cb37037e828c3f5360b42ad351fa51222e9/packages/babel-plugin-transform-svg-component/src/index.test.js
- */
-const template: svgr.Template = (
-   { template },
-   _opts,
-   { componentName, jsx }
-) => {
-   const ts = template.smart({ plugins: ['typescript'] });
-
-   return ts.ast`
-     import * as React from 'react';
-     export default ${componentName} = (props: React.SVGProps<SVGSVGElement>) => ${jsx};
-   `;
-};
-
-/**
  * Use SVGR to convert SVG source to JSX using a custom SVGO and template
  * configuration.
  */
@@ -55,9 +38,7 @@ export const svgToJSX = (svg: string) =>
    svgr.sync(svg, {
       native: true,
       svgo: true,
-      plugins: [svgoPlugin, '@svgr/plugin-jsx'],
-      template,
-      ext: '.ts'
+      plugins: [svgoPlugin, '@svgr/plugin-jsx']
    });
 
 /**
@@ -80,16 +61,14 @@ export function transform(
    }
 
    if (options === undefined) {
-      options = {
-         dev: true
-      };
+      options = {};
    }
 
    return filename.endsWith('.svg')
-      ? metroBabel.transform({
+      ? metroTransform.transform({
            src: svgToJSX(src),
            filename,
            options
         })
-      : metroBabel.transform({ src, filename, options });
+      : metroTransform.transform({ src, filename, options });
 }
