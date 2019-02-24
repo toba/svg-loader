@@ -5,9 +5,9 @@ import metroBabel from 'metro-react-native-babel-transformer';
 import { makeSVGO } from './index';
 
 /**
- * SVGR plugin to run SVGO.
+ * SVGR plugin to run SVGO with custom configuration.
  */
-export const svgoPlugin: svgr.Plugin = (src, config, _state) => {
+export const svgoPlugin: svgr.Plugin = src => {
    const svgo = makeSVGO({
       removeXMLNS: true,
       // https://github.com/svg/svgo/blob/master/plugins/removeEditorsNSData.js

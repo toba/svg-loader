@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
-import Svg, { Circle, Rect } from 'react-native-svg';
-//import Logo from '../../src/__mocks__/logo-colored.svg';
+//import Svg, { Circle, Rect } from 'react-native-svg';
+import Logo from '../../src/__mocks__/logo-colored.svg';
 
 const instructions = Platform.select({
    ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -40,27 +40,28 @@ export class ExampleApp extends Component {
                To get started, edit app.tsx
             </Text>
             <Text style={styles.instructions}>{instructions}</Text>
-
-            <Svg height="50%" width="50%" viewBox="0 0 100 100">
-               <Circle
-                  cx="50"
-                  cy="50"
-                  r="45"
-                  stroke="blue"
-                  strokeWidth="2.5"
-                  fill="green"
-               />
-               <Rect
-                  x="15"
-                  y="15"
-                  width="70"
-                  height="70"
-                  stroke="red"
-                  strokeWidth="2"
-                  fill="yellow"
-               />
-            </Svg>
+            <Logo />
          </View>
       );
    }
 }
+
+// <Svg height="50%" width="50%" viewBox="0 0 100 100">
+// <Circle
+//    cx="50"
+//    cy="50"
+//    r="45"
+//    stroke="blue"
+//    strokeWidth="2.5"
+//    fill="green"
+// />
+// <Rect
+//    x="15"
+//    y="15"
+//    width="70"
+//    height="70"
+//    stroke="red"
+//    strokeWidth="2"
+//    fill="yellow"
+// />
+// </Svg>
