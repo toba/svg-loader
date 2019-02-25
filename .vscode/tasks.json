@@ -49,7 +49,7 @@
          "problemMatcher": []
       },
       {
-         "label": "Example: Bundle Web",
+         "label": "Example: Bundle",
          "command": "${workspaceFolder}/node_modules/.bin/webpack",
          "options": {
             "cwd": "${workspaceFolder}/node_modules/@toba/example/"
@@ -69,66 +69,6 @@
             "cwd": "${workspaceFolder}/node_modules/@toba/example/build"
          },
          "type": "shell",
-         "problemMatcher": []
-      },
-      {
-         "label": "Example: iOS",
-         "command": "./node_modules/.bin/react-native",
-         "args": ["run-ios"],
-         "options": {
-            "cwd": "${workspaceFolder}/node_modules/@toba/example/src/mobile"
-         },
-         "presentation": {
-            "echo": false,
-            "clear": true
-         },
-         "problemMatcher": []
-      },
-      {
-         "label": "Example: Install Dependencies",
-         "command": "yarn",
-         "args": ["install"],
-         "options": {
-            "cwd": "${workspaceFolder}/node_modules/@toba/example/src/mobile"
-         },
-         "presentation": {
-            "clear": true
-         },
-         "problemMatcher": []
-      },
-      {
-         "label": "Example: Bundle Mobile",
-<<<<<<< HEAD
-         "command": "react-native",
-         "args": ["start"], //"--resetCache"],
-=======
-         "command": "node",
-         "args": [
-            "./node_modules/react-native/local-cli/cli.js",
-            "start",
-            "--resetCache"
-         ],
->>>>>>> parent of 3973e38... working
-         "options": {
-            "cwd": "${workspaceFolder}/node_modules/@toba/example/src/mobile"
-         },
-         "presentation": {
-            "echo": false,
-            "clear": true
-         },
-         "problemMatcher": []
-      },
-      {
-         "label": "Example: Android",
-         "command": "./node_modules/.bin/react-native",
-         "args": ["run-android"],
-         "options": {
-            "cwd": "${workspaceFolder}/node_modules/@toba/example/src/mobile"
-         },
-         "presentation": {
-            "echo": false,
-            "clear": true
-         },
          "problemMatcher": []
       }
    ]

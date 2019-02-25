@@ -1,7 +1,6 @@
 {
    "extends": "@toba/develop/tsconfig.cjs",
    "compilerOptions": {
-      "typeRoots": ["./types", "node_module/@types"],
-      "resolveJsonModule": true
+      "typeRoots": ["./types", "node_module/@types"]
    }
 }

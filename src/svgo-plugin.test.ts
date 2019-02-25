@@ -2,7 +2,7 @@ import '@toba/test';
 import path from 'path';
 import { readFileText } from '@toba/test';
 import SVGO from 'svgo';
-import { svgToSymbol } from './svgo-plugin';
+import { OptimizedSvg, svgToSymbol } from './svgo-plugin';
 
 test('renames svg tags to symbol', async () => {
    const text = await readFileText(
@@ -12,7 +12,7 @@ test('renames svg tags to symbol', async () => {
       plugins: [{ svgToSymbol } as any],
       js2svg: { pretty: true }
    });
-   const out: SVGO.OptimizedSvg = await svgo.optimize(text);
+   const out: OptimizedSvg = await svgo.optimize(text);
    expect(out).toHaveProperty('data');
 
    const svg = out.data.trim();

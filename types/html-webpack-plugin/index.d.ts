@@ -30,7 +30,7 @@ declare module 'html-webpack-plugin' {
          tagName: string,
          attributes: { [attributeName: string]: string | boolean },
          innerHTML: string
-      ): HtmlTagObject;
+      ): HtmlWebpackPlugin.HtmlTagObject;
 
       constructor(options?: HtmlWebpackPlugin.Options);
    }
@@ -72,7 +72,7 @@ declare module 'html-webpack-plugin' {
       voidTag: boolean;
    }
 
-   namespace HtmlWebpackPlugin {
+   declare namespace HtmlWebpackPlugin {
       /**
        * The plugin options
        */
@@ -157,7 +157,7 @@ declare module 'html-webpack-plugin' {
             | false // Pass an empty object to the template function
             | ((
                  compilation: any,
-                 assets: any,
+                 assets,
                  assetTags: {
                     headTags: HtmlTagObject[];
                     bodyTags: HtmlTagObject[];
@@ -166,7 +166,7 @@ declare module 'html-webpack-plugin' {
               ) => { [option: string]: any })
             | ((
                  compilation: any,
-                 assets: any,
+                 assets,
                  assetTags: {
                     headTags: HtmlTagObject[];
                     bodyTags: HtmlTagObject[];

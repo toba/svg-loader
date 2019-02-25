@@ -2,7 +2,6 @@
    "extends": "@toba/develop/tsconfig.cjs",
    "compilerOptions": {
       "typeRoots": ["./types", "node_module/@types"],
-      "skipLibCheck": false,
-      "resolveJsonModule": true
+      "skipLibCheck": false
    }
 }
