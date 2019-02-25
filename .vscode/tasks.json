@@ -76,7 +76,7 @@
          "command": "./node_modules/.bin/react-native",
          "args": ["run-ios"],
          "options": {
-            "cwd": "${workspaceFolder}/examples/mobile"
+            "cwd": "${workspaceFolder}/node_modules/@toba/example/src/mobile"
          },
          "presentation": {
             "echo": false,
@@ -89,7 +89,7 @@
          "command": "yarn",
          "args": ["install"],
          "options": {
-            "cwd": "${workspaceFolder}/examples/mobile"
+            "cwd": "${workspaceFolder}/node_modules/@toba/example/src/mobile"
          },
          "presentation": {
             "clear": true
@@ -98,10 +98,19 @@
       },
       {
          "label": "Example: Bundle Mobile",
+<<<<<<< HEAD
          "command": "react-native",
          "args": ["start"], //"--resetCache"],
+=======
+         "command": "node",
+         "args": [
+            "./node_modules/react-native/local-cli/cli.js",
+            "start",
+            "--resetCache"
+         ],
+>>>>>>> parent of 3973e38... working
          "options": {
-            "cwd": "${workspaceFolder}/examples/mobile"
+            "cwd": "${workspaceFolder}/node_modules/@toba/example/src/mobile"
          },
          "presentation": {
             "echo": false,
@@ -114,7 +123,7 @@
          "command": "./node_modules/.bin/react-native",
          "args": ["run-android"],
          "options": {
-            "cwd": "${workspaceFolder}/examples/mobile"
+            "cwd": "${workspaceFolder}/node_modules/@toba/example/src/mobile"
          },
          "presentation": {
             "echo": false,
