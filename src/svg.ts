@@ -1,5 +1,4 @@
 declare module '*.svg' {
-   import React from 'react';
-   const svg: React.ReactSVGElement;
+   const svg: string;
    export default svg;
 }
